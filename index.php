@@ -6,3 +6,15 @@ $link = @mysqli_connect('mysql1.cs.clemson.edu','jayqiu16','myyoutube123');
 if(mysqli_connect_errno()){
 	exit(mysqli_connect_error());
 }
+
+//set default character encoding
+mysqli_set_charset($link, 'utf8');
+
+//select table
+mysqli_select_db($link, 'myYouTube');
+//var_dump(mysqli_select_db($link, 'myYouTube'));
+
+
+
+//close database connection
+//mysqli_close($link);
