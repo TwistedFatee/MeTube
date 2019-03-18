@@ -1,0 +1,283 @@
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: Helvetica;
+}
+
+body{
+    height: 2500px;
+    font: "Helvetica";
+}
+
+a{
+    text-decoration: none;
+}
+
+.allDiv{
+    min-width: 1000px;
+}
+
+.topbar{
+    background-color: #333;
+    height: 36px;
+    min-width: 1000px;
+}
+
+.container{
+    margin: 0 auto;
+    width: 1000px;
+    text-align: center;
+}
+
+.container::before, .container::after, .clearfloat::before, .clearfloat::after{
+    content:"";
+    display: table;
+}
+
+.container::after, .clearfloat::after{
+    clear: both;
+}
+
+.topbar a{
+    color: #b0b0b0;
+    font-size: 16px;
+}
+
+.topbar-developer{
+    float: left;
+    /* height: 40px;
+    line-height: 40px; */
+    font-size: 26px;
+    text-align: center;
+    vertical-align: center;
+    /* display: inline-block; */
+    margin-left: 16px;
+}
+
+.topbar-developer a{
+    color: #b0b0b0;
+    font-size: 16px;
+    vertical-align: center;
+}
+
+.topbar a:hover{
+    color: #fff;
+}
+
+.topbar-developer a:hover{
+    color: #ff6700;
+}
+
+/* .topbar-search{
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    color: inherit;
+    font-family: 'Roboto','Noto',sans-serif;
+    font-size: 16px;
+    line-height: 40px;
+} */
+
+.topbar-message a{
+    display: block;
+    text-align: center;
+    background-color: #424242;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 16px 0 10px;
+}
+
+.topbar-message a:hover{
+    background-color: #fff;
+    color: #ff6700;
+}
+
+.topbar-message i{
+    font-size: 20px;
+    line-height: 36px;
+    font-weight: bold;
+}
+
+.topbar-message span{
+    font-size: 20px;
+    line-height: 36px;
+}
+
+.topbar-info, .topbar-message{
+    float: right;
+    height: 36px;
+    line-height: 36px;
+    font-size: 26px;
+    text-align: center;
+}
+
+.topbar-info a{
+    float: left;
+    padding: 0 5px;
+    text-align: center;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.topbar-info span{
+    float: left;
+    color: #fff;
+    font-family: sans-serif;
+    font-size: 16px;
+    text-align: center;
+}
+
+.layout{
+    text-align: center;
+}
+
+.header{
+    height: 100px;
+    display: inline-block;
+}
+
+/* .header-container{
+    margin: 0 auto;
+    width: 
+} */
+
+.header-logo{
+    float: left;
+    min-width: 62px;
+    min-height: 55px;
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+.header-logo a{
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: url(../img/logo.png) no-repeat;
+    background-size: 100%;
+    margin-left: 10px;
+}
+
+.header-logo .t1{
+    text-align: left;
+    text-indent: -9999em;
+}
+
+.header-category{
+    float: left;
+    /* min-width: 820px; */
+    margin-left: 16px;
+}
+
+.header-category .category-list{
+    /* width: 820px; */
+    height: 88px;
+    font-size: 16px;
+}
+
+.header-category .category-list .item{
+    float: left;
+}
+
+.header-category .category-list .item a{
+    display: block;
+    margin: 26px 10px 38px;
+    color: #333;
+}
+
+.header-category .category-list .item a:hover{
+    color: #ff6700;
+}
+
+.header-search{
+    float: left;
+    padding: 18px 0 0 10px;
+}
+
+.header-search .search-form{
+    display: block;
+    height: 32px;
+}
+
+.header-search .search-form .search-text{
+    display: inline-block;
+    width: 180px;
+    height: 32px;
+    line-height: 32px;
+    border: 1px solid #e0e0e0;
+    font-size: 16px;
+    outline: 0;
+}
+
+.header-search .search-form .search-button{
+    display: inline-block;
+    width: 36px;
+    height: 32px;
+    background: #fff;
+    color: #616161;
+    border: 1px solid #e0e0e0;
+    outline: 0;
+}
+
+.header-search .search-form .search-button:hover{
+    background-color: #ff6700;
+    color: #fff;
+}
+
+.content{
+    background-color: #f5f5f5;
+}
+
+.movies{
+    display: inline-block;
+}
+
+.recommend{
+    text-align: left;
+    padding: 16px 0px 16px 0px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #868686;
+}
+
+.movies ul{
+    /* border: 1px solid black; */
+    margin-right: -13px;
+}
+
+.movies li{
+    float: left;
+    height: 180.5px;
+    width: 210px;
+    background-color: #fff;
+    /* border: 1px solid black; */
+    margin-right: 13px;
+    margin-bottom: 13px;
+}
+
+.movies .bg{
+    width: 210px;
+    height: 118.5px;
+    /* border: 1px solid black; */
+}
+
+.movies .bg img{
+    height: 118.5px;
+    width: 210px;
+}
+
+.movies .intro{
+    width: 210px;
+    height: 63px;
+    text-align: justify;
+    /* border: 1px solid red; */
+}
+
+.movies .intro .name{
+    font-size: 15px;
+    color: #333;
+    height: 63px; 
+}
+
