@@ -5,10 +5,9 @@
 	<meta name="Viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>MeTube Register</title>
-	<link rel="icon" href="../../img/logo.png" type="image/x-icon"/>
+	<link rel="icon" href="img/logo.png" type="image/x-icon"/>
 	<link rel="stylesheet" type="text/css" href="css/Register.css">
-	<script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="../jquery-3.2.1.js"></script>
+
 </head>
 
 
@@ -18,8 +17,8 @@
 	<div class = "header">
 		<div class = "nav_logo">
 			<div class = "logo">
-					<a href ="../../index.html">
-					<img src="../../img/logo.png" alt = "">
+					<a href ="index.php">
+					<img src="img/logo.png" alt = "">
 				</a>
 				<p style="display: inline-block; font-size: 68px; font-weight: bold; vertical-align: top;">MeTube</p>
 			</div>
@@ -32,9 +31,7 @@
 		<div class = "main">
 <?php
 ini_set('session.save_path','/home/cai7/temp');
-
 session_start();
-
 include_once "function.php";
 
 if(isset($_POST['register_submit'])) {
@@ -67,7 +64,6 @@ if(isset($_POST['register_submit'])) {
 		}
 	}
 }
- 
 ?>
 			<form method = "post" name = "registerForm" action="<?php echo "register.php"; ?>">
 				<div class = "item">
@@ -87,20 +83,20 @@ if(isset($_POST['register_submit'])) {
 				</div>
 				<div class = "item">
 					<label>Phone</label>
-					<input id = "phone" name  = "phone" type = "tel" class = "basic_input" tabindex = "4" maxlength = "10" placeholder = "Phone number 1234567890">
+					<input id = "phone" name  = "phone" type = "tel" class = "basic_input" tabindex = "4" maxlength = "10" placeholder = "1234567890 Optional">
 					<div id = "phone_error" class = "val_error"></div>
 				</div>
 				<div class = "item">
 					<label>Email</label>
-					<input id = "email" name  = "email" type = "email" class = "basic_input" tabindex = "5" maxlength = "60" placeholder = "Name@g.clemson.edu">
+					<input id = "email" name  = "email" type = "email" class = "basic_input" tabindex = "5" maxlength = "60" placeholder = "Optional">
 					<div id = "email_error" class = "val_error"></div>
 				</div>
 
 				<div>
 				
-					<input type = "submit" name = "register_submit" id = "register_submit" value = "Register">
+					<input type = "submit" name = "register_submit" id = "register_submit" value = "Register" class="register_submit">
 
-					<input name="reset" type="reset" value="Reset">
+					<input name="reset" type="reset" value="Reset" class="register_submit" id="register_submit">
 				</div>
 			</form>
 		</div>
@@ -123,8 +119,7 @@ if(isset($_POST['register_submit'])) {
 			</span>
 		</div>
 	</div>
-	<script type="text/javascript" src="Register.js"></script>
-	<script type="text/javascript" src="VerifyCode.js"></script>
+
 </body>
 </html>
 

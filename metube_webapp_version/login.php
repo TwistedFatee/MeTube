@@ -5,11 +5,9 @@
     <meta name="Viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MeTube Login</title>
-    <link rel="icon" href="/img/logo.png" type="image/x-icon"/>
-    <link rel="stylesheet" type="text/css" href="/css/Register.css">
-    <link rel="stylesheet" type="text/css" href="/css/Login.css">
-    <script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="../jquery-3.2.1.js"></script>
+    <link rel="icon" href="img/logo.png" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="css/Register.css">
+    <link rel="stylesheet" type="text/css" href="css/Login.css">
 </head>
 
 <body>
@@ -17,7 +15,7 @@
     <div class = "nav_logo">
         <div class = "logo">
             <a href ="index.php">
-                <img src="/img/logo.png" alt = "">
+                <img src="img/logo.png" alt = "">
             </a>
             <p style="display: inline-block; font-size: 68px; font-weight: bold; vertical-align: top;">MeTube</p>
         </div>
@@ -33,9 +31,7 @@
 	
 <?php
 ini_set('session.save_path','/home/cai7/temp');
-
 session_start();
-
 include_once "function.php";
 
 if(isset($_POST['login_submit'])) {
@@ -54,7 +50,7 @@ if(isset($_POST['login_submit'])) {
 				$login_error = "Incorrect password.";
 			}
 			else if($check==0){
-				 //Set the $_SESSION['username'];
+				
 				$query="select * from account where username='$username'";
 				$result=mysql_query($query);
 				if (!$result)
@@ -63,8 +59,10 @@ if(isset($_POST['login_submit'])) {
 				}
 				else{
 					$row = mysql_fetch_row($result);
+					//Set the $_SESSION variables
 					$_SESSION['password']=$password;	
 					$_SESSION['username']=$username;
+					$_SESSION['userid']=$row[0];
 				}
 				$url = "index.php?user=".$username;
 				echo "<meta http-equiv=\"refresh\" content=\"0;url=$url\">";
@@ -88,7 +86,7 @@ if(isset($_POST['login_submit'])) {
             </div>
             <div>
                 <label>&nbsp;</label>
-                <input type = "submit" name = "login_submit" id = "Login_submit" value = "Login" class = "Login_submit">
+                <input type = "submit" name = "login_submit" id = "Login_submit" value = "Login" class = "login_submit">
             </div>
         </form>
     </div>
@@ -118,7 +116,6 @@ if(isset($_POST['login_submit'])) {
 			</span>
     </div>
 </div>
-<script type="text/javascript" src="login.js"></script>
 </body>
 </html>
 

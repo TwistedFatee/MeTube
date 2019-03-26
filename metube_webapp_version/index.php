@@ -50,7 +50,7 @@
         <div class="header">
             <div class="header-container">
                 <div class="header-logo">
-                    <a href="#" class="t1">MeTube</a>
+                    <a href="index.php" class="t1">MeTube</a>
                 </div>
                 <div class="header-category">
                     <ul class="category-list clearfloat" id="tabs">
