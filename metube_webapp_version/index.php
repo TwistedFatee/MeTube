@@ -78,7 +78,7 @@
                     </ul>
                 </div>
                 <div class="header-search">
-                    <form action="" class="search-form">
+                    <form action="search.php" class="search-form">
                         <input type="search" name="keyword" class="search-text">
                         <input type="submit" value="&#xe71f;" class="search-button iconfont">
                     </form>
@@ -164,7 +164,5 @@
 
     </div>
    </div>
-
-   <script src="js/index.js"></script>
 </body>
 </html>
