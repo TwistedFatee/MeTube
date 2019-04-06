@@ -51,33 +51,35 @@ if(isset($_SESSION['username']) && isset($_SESSION['password'])){
 					{
 						chmod($upfile, 0644);
 						//insert into media table
-						$insert = "insert into media(filename,filepath,type) "."values('". urlencode($_FILES["file"]["name"])."','$dirfile','".$_FILES["file"]["type"]."')";
-						$queryresult = mysql_query($insert)
-							or die("Insert into Media error in media_upload_process.php " .mysql_error());
-					
+						
+						$medianame=mysql_escape_string($_POST['medianame']);
+						$description=mysql_escape_string($_POST['description']);
+						$tag1=mysql_escape_string($_POST['tag1']);
+						$tag2=mysql_escape_string($_POST['tag2']);
+						$tag3=mysql_escape_string($_POST['tag3']);
+						$category=$_POST['category'];
+						$permission=$_POST['private'];
+						$size=$_FILES["file"]["size"];
+						
+						$insert = "insert into media(filename,filepath,type,userid,medianame,description,tag1,tag2,tag3,permission,size) "
+						."values('". urlencode($_FILES["file"]["name"])."','$dirfile','".$_FILES["file"]["type"]."','$userid','$medianame','$description','$tag1','$tag2','$tag3','$permission',$size)";
+						$queryresult = mysql_query($insert);
+						if(!$queryresult){
+							die("Insert into Media error in media_upload_process.php ".mysql_error());
+						}
 					
 						$mediaid = mysql_insert_id();
-					//$query="select * from account where username='$username'";
-					//$result=mysql_query($query);
-					//if (!$result)
-					//{
-						//die ("cannot find userid. Could not query the database: <br />". mysql_error());
-					//}
-					//else{
-						//$row = mysql_fetch_row($result);
-						//$userid=$row[0];
-						//insert into upload table
-						$insertUpload="insert into upload(userid,mediaid) values('$userid','$mediaid')";
-						$queryresult = mysql_query($insertUpload)
-							or die("Insert into view error in media_upload_process.php " .mysql_error());
-						$result="0";
-					//}
+						$q="update media set uploadtime=NOW() where mediaid='$mediaid'";
+						$uploadresult=mysql_query($q);
+						if(!$uploadresult){
+							die("Uploadtime error in media_upload_process.php ".mysql_error());
+						}
 					}
 				}
 			
 			}
 		}
-		header('Location:browse.php?result=$result');
+		header('Location:browse.php');
 	}
 	else
 	{
@@ -88,7 +90,7 @@ else
 {
 	header('Location:require_login.php');
 }
-	//You can process the error code of the $result here.
+
 ?>
 
 

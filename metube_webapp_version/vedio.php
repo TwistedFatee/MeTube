@@ -3,38 +3,76 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>video player</title>
-    <meta name="Author" content="Yining Qiu & Yin Cai">
+    <meta name="Author" content="Yining Qiu & Ying Cai">
     <meta name="Description" content="video page">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/main.css">
     <link type="image/x-icon" rel="shortcut icon" href="favicon.ico"/>
-    <link rel="stylesheet" href="./css/font-awesome.css">
-    <link rel="stylesheet" href="./css/player.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/player.css">
     <link rel="stylesheet" href="css/iconfont.css">
 	
 </head>
 <body>
 <figure>
-    <figcaption>MeTube Video Player</figcaption>
-    <div class="player">
-        <video id="myVideo" src="Facebook.mp4"></video>
-        <div class="controls">
-            <a href="javascript:;" class="switch fa fa-play"></a>
-            <a href="javascript:;" class="expand fa fa-expand"></a>
-            <div class="progress">
-                <div class="loaded"></div>
-                <div class="line"></div>
-                <div class="bar"></div>
-            </div>
-            <div class="timer">
-                <span class="current">00:00:00</span> /
-                <span class="total">00:00:00</span>
-            </div>
-        </div>
-    </div>
-</figure>
+    <p>MeTube Video Player</figcaption>
+	
+
+
+<?php
+ini_set('session.save_path','/home/cai7/temp');
+session_start();
+include_once "function.php";
+?>
+
+	<p>Welcome <?php echo $_SESSION['username'];?></p>
+	<p>Welcome <?php echo $_SESSION['userid'];?></p>
+<?php
+if(isset($_GET['mid'])) {
+	$query = "SELECT * FROM media WHERE mediaid='".$_GET['mid']."'";
+	$result = mysql_query( $query );
+	$result_row = mysql_fetch_assoc($result);
+	
+	updateMediaTime($_GET['mid']);
+	updateViews($_GET['mid']);
+	
+	$filename=$result_row['filename'];
+	$filepath=$result_row['filepath'];
+	$type=$result_row['type'];
+	if(substr($type,0,5)=="image") //view image
+	{
+		echo "Viewing Picture:";
+		echo $result_row['filepath'].$result_row['filename'];
+		echo "<br>";
+		echo "<img src='".$filepath.$filename."'/>";
+	}
+	else //view movie
+	{	
+?>	
+
+	<p>Viewing Video:<?php echo $result_row['medianame'];?></p>
+	<object id="MediaPlayer" align="middle" width=420 height=386 classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95" standby="Loading Windows Media Player components…" type="application/x-oleobject" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112">
+
+<param name="filename" value="<?php echo $result_row['filepath'].$result_row['filename'];  ?>">
+<param name="Showcontrols" value="True">
+<param name="autoStart" value="True">
+
+<embed type="application/x-mplayer2" src="<?php echo $result_row['filepath'].$result_row['filename'];  ?>" name="MediaPlayer" width=420 height=340></embed>
+
+</object>
+	
+<?php
+	}
+}
+else
+{
+?>
+<meta http-equiv="refresh" content="0;url=browse.php">
+<?php
+}
+?>
     
 <div class="tool-bar">
         <div class="ops">
@@ -56,6 +94,14 @@
             <span title="Favorites" class="subscribe">
                 <i class="iconfont" style="color: grey; font-weight: bold;">&#xe63f;</i>
                 Subscribe
+            </span>
+			
+			<canvas width="34" height="34" class="ring-progress" style="width:34px;height:34px;left:-3px;top:-3px;">
+            </canvas>
+            
+            <span>
+                <i class="iconfont" style="color: grey; font-weight: bold;">&#xe63f;</i>
+                <a href="media_download_process.php?mid=<?php echo $result_row['mediaid'];?>" target='_blank'> Download </a>
             </span>
         </div>
 

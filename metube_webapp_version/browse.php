@@ -9,19 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Media browse</title>
 <link rel="stylesheet" type="text/css" href="css/default.css" />
-<script type="text/javascript" src="js/jquery-latest.pack.js"></script>
-<script type="text/javascript">
-function saveDownload(id)
-{
-	$.post("media_download_process.php",
-	{
-       id: id,
-	},
-	function(message) 
-    { }
- 	);
-} 
-</script>
+
+
 </head>
 
 <body>
@@ -41,7 +30,7 @@ function saveDownload(id)
 <?php
 
 
-	$query = "SELECT * from media"; 
+	$query = "SELECT * from media "; 
 	$result = mysql_query( $query );
 	if (!$result)
 	{
@@ -52,20 +41,20 @@ function saveDownload(id)
     <div style="background:#339900;color:#FFFFFF; width:150px;">Uploaded Media</div>
 	<table width="50%" cellpadding="0" cellspacing="0">
 		<?php
-			while ($result_row = mysql_fetch_row($result))
+			while ($result_row = mysql_fetch_assoc($result))
 			{ 
 		?>
         <tr valign="top">			
 			<td>
 					<?php 
-						echo $result_row[0];
+						echo $result_row['mediaid'];
 					?>
 			</td>
             <td>
-            	<a href="media.php?mid=<?php echo $result_row[0];?>" target="_blank"><?php echo $result_row[1];?></a> 
+            	<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $result_row['medianame'];?></a> 
             </td>
             <td>
-            	<a href="media_download_process.php?mid=<?php echo $result_row[0];?>" target="_blank">Download</a>
+            	<a href="media_download_process.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">Download</a>
             </td>
 		</tr>
         <?php

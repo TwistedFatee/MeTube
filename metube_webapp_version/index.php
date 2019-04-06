@@ -55,7 +55,7 @@
                 <div class="header-category">
                     <ul class="category-list clearfloat" id="tabs">
                         <li class="item">
-                            <a href="">Sports</a>
+                            <a href="category.php?category='sports'">Sports</a>
                         </li>
                         <li class="item">
                             <a href="">Movie</a>
@@ -77,10 +77,11 @@
                         </li>
                     </ul>
                 </div>
+				
                 <div class="header-search">
-                    <form action="search.php" class="search-form">
+                    <form action="search.php?key=$keyword" class="search-form">
                         <input type="search" name="keyword" class="search-text">
-                        <input type="submit" value="&#xe71f;" class="search-button iconfont">
+                        <input type="submit" name="search_submit" value="&#xe71f;" class="search-button iconfont" >
                     </form>
                 </div>
             </div>

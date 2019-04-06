@@ -40,16 +40,16 @@ if(isset($_POST['login_submit'])) {
 	}
 	else {
 		$username = mysql_escape_string($_POST['username']);
-		$check = user_exist_check($username);
-		if($check == 0){
+		$usernamecheck = user_exist_check($username);
+		if($usernamecheck == 0){
 			$login_error = "Username does not exist.";
 		}else{
 			$password = mysql_escape_string($_POST['password']);				
-			$check = user_pass_check($username, $password); // Call functions from function.php
-			if($check==2) {
+			$passcheck = user_pass_check($username, $password); // Call functions from function.php
+			if($passcheck==2) {
 				$login_error = "Incorrect password.";
 			}
-			else if($check==0){
+			else if($passcheck==0){
 				
 				$query="select * from account where username='$username'";
 				$result=mysql_query($query);
@@ -64,6 +64,14 @@ if(isset($_POST['login_submit'])) {
 					$_SESSION['username']=$username;
 					$_SESSION['userid']=$row[0];
 				}
+				
+				$updateaccesstime="update account set lastaccesstime=NOW() where userid='$row[0]'";
+				$updateresult=mysql_query($updateaccesstime);
+				if (!$updateresult)
+				{
+					die ("Could not query the database account and update access time: <br />". mysql_error());
+				}
+				
 				$url = "index.php?user=".$username;
 				echo "<meta http-equiv=\"refresh\" content=\"0;url=$url\">";
 			}				
