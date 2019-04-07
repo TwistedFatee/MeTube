@@ -30,7 +30,12 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 		if($_FILES["file"]["error"] > 0 )
 		{ 
 			$result=$_FILES["file"]["error"];
+			echo upload_error($result).". Upload fails.";
 		} //error from 1-7
+		else if($_POST['medianame']==NULL){
+			echo "File must have a name! Uploading failed.";
+		}
+		
 		else
 		{
 			$upfile = $dirfile.urlencode($_FILES["file"]["name"]);
@@ -38,6 +43,7 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 			if(file_exists($upfile))
 			{
 				$result="5"; //The file has been uploaded.
+				echo upload_error($result);
 			}
 			else
 			{
@@ -61,8 +67,8 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 						$permission=$_POST['private'];
 						$size=$_FILES["file"]["size"];
 						
-						$insert = "insert into media(filename,filepath,type,userid,medianame,description,tag1,tag2,tag3,permission,size) "
-						."values('". urlencode($_FILES["file"]["name"])."','$dirfile','".$_FILES["file"]["type"]."','$userid','$medianame','$description','$tag1','$tag2','$tag3','$permission',$size)";
+						$insert = "insert into media(filename,filepath,type,userid,medianame,description,tag1,tag2,tag3,permission,size,category) "
+						."values('". urlencode($_FILES["file"]["name"])."','$dirfile','".$_FILES["file"]["type"]."','$userid','$medianame','$description','$tag1','$tag2','$tag3','$permission','$size','$category')";
 						$queryresult = mysql_query($insert);
 						if(!$queryresult){
 							die("Insert into Media error in media_upload_process.php ".mysql_error());
@@ -76,10 +82,11 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 						}
 					}
 				}
-			
+			header('Location:index.php');
 			}
+			
 		}
-		header('Location:browse.php');
+		
 	}
 	else
 	{

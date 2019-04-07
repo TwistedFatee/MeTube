@@ -55,18 +55,17 @@ else
    <input  name="file" type="file" size="50" required>
 	<br>
 	Category&nbsp;
-	<select name="category" required>
-    <option value="sports">Sport</option>
-    <option value="movie">Movie</option>
-    <option value="tv">TV</option>
-    <option value="talkshow">Talk Show</option>
-	<option value="cartoon">Cartoon</option>
-    <option value="game">Game</option>
-    <option value="documentary">Documentary</option>
-	</select>
+	<input type='radio' name='category' value='sport' checked='checked' required>Sport
+	<input type='radio' name='category' value='music'>Music
+	<input type='radio' name='category' value='movie'>Movie
+    <input type='radio' name='category' value='tv'>TV
+    <input type='radio' name='category' value='talkshow'>Talk Show
+	<input type='radio' name='category' value='cartoon'>Cartoon
+    <input type='radio' name='category' value='game'>Game
+    <input type='radio' name='category' value='othertype'>Other Type
 	<br>
 	Permission&nbsp;
-	<input type="radio" name="private" value="public" required>Public
+	<input type="radio" name="private" value="public" checked='checked' required>Public
 	<input type="radio" name="private" value="grouponly" required>Group Only
 	<input type="radio" name="private" value="private" required>Private
 	<br>

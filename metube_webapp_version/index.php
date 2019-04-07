@@ -438,7 +438,7 @@ if(isset($_SESSION['userid'])){
 } 
    else{
 			$ip = $_SERVER['REMOTE_ADDR'];
-			$q="select * from view inner join media on view.mediaid=media.mediaid where view.ip='$ip' order by view.viewtime desc limit 8";
+			$q="select * from view inner join media on view.mediaid=media.mediaid where view.ip='$ip' and view.userid=0 order by view.viewtime desc limit 8";
 			$r=mysql_query($q);
 			if(!$r){
 				die ("Could not query the database view: <br />". mysql_error());

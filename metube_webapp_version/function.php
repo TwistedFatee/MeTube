@@ -229,7 +229,24 @@ function deleteMedia($mediaid){
 
 
 function createPlayList($userid, $listname){
-	
+	$q="select * from playlist where userid='$userid' and playlistname='$listname'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("deleteMedia() failed. Could not query the database playlist: <br />". mysql_error());
+	}
+	$numrows=mysql_num_rows($result);
+	if ($numrows == 0){
+		$q="insert into playlist(userid, playlistname, createtime) values('$userid','$listname', NOW())";
+		$result=mysql_query($q);
+		if (!$result)
+		{
+			die ("deleteMedia() failed. Could not query the database playlist: <br />". mysql_error());
+		}
+		return mysql_insert_id();
+	}else{
+		return 0; //already exist
+	}
 }
 
 function removePlayList($playlistid){
@@ -249,20 +266,67 @@ function removePlayList($playlistid){
 	return 0;
 }
 
-function removeFavoriteList($favoritelistid){
-	$q="delete from flistmedia where favorilistid='$favoritelistid'";
+function addToPlaylist($playlistid, $mediaid){
+	$q="select * from plistmedia where playlistid='$playlistid' and mediaid='$mediaid'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("deleteMedia() failed. Could not query the database playlist: <br />". mysql_error());
+	}
+	$numrows=mysql_num_rows($result);
+	if ($numrows == 0){
+		$q="insert into plistmedia(playlistid,mediaid, addtime) values('$playlistid','$mediaid', NOW())";
+		$result=mysql_query($q);
+		if (!$result)
+		{
+			die ("deleteMedia() failed. Could not query the database playlist: <br />". mysql_error());
+		}
+		return 0;
+	}else{
+		return 1; //already exist
+	}
+}
+
+function removeFromPlaylist($playlistid, $mediaid){
+	$q="delete from plistmedia where playlistid='$playlistid' and mediaid='$mediaid'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("deleteMedia() failed. Could not query the database playlist: <br />". mysql_error());
+	}
+	return 0;
+}
+
+function addFavorite($userid, $mediaid){
+	$q="select * from flistmedia where userid='$userid' and mediaid='$mediaid'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("deleteMedia() failed. Could not query the database flistmedia: <br />". mysql_error());
+	}
+	$numrows=mysql_num_rows($result);
+	if ($numrows == 0){
+		$q="insert into flistmedia(userid, mediaid,addtime) values('$userid','$mediaid',NOW())";
+		$result=mysql_query($q);
+		if (!$result)
+		{
+			die ("deleteMedia() failed. Could not query the database flistmedia: <br />". mysql_error());
+		}
+		return 0;
+	}else{
+		return 1; //already in favorite list
+	}
+	
+}
+
+function removeFavorite($userid, $mediaid){
+	$q="delete from flistmedia where userid='$userid' and mediaid='$mediaid'";
 	$result=mysql_query($q);
 	if (!$result)
 	{
 	   die ("deleteMedia() failed. Could not query the database flistmedia: <br />". mysql_error());
 	}
 	
-	$q="delete from userflist where favorilistid='$favoritelistid'";
-	$result=mysql_query($q);
-	if (!$result)
-	{
-	   die ("deleteMedia() failed. Could not query the database userflist: <br />". mysql_error());
-	}
 	return 0;
 }
 

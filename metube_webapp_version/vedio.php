@@ -103,7 +103,7 @@ else
 <div class="tool-bar">
         <div class="ops">
             <span title="like" class="like"><i class="iconfont" style="color: grey; font-weight: bold;">&#xe60c;</i>
-                Favorite
+              <a href="favorite.php?mid=<?php echo $result_row['mediaid'];?>"> Favorite </a>
             </span>
         
             <canvas width="34" height="34" class="ring-progress" style="width:34px;height:34px;left:-3px;top:-3px;">
@@ -111,15 +111,15 @@ else
             
             <span title="share" class="share">
             <i class="iconfont" style= "color: grey; font-weight: bold;" >&#xe632;</i>
-            Share
+            <a href="share.php?mid=<?php echo $result_row['mediaid'];?>">Share</a>
             </span>
             
             <canvas width="34" height="34" class="ring-progress" style="width:34px;height:34px;left:-3px;top:-3px;">
             </canvas>
             
-            <span title="Favorites" class="subscribe">
+            <span title="Favorites" class="playlist">
                 <i class="iconfont" style="color: grey; font-weight: bold;">&#xe63f;</i>
-                Subscribe
+                <a href="playlist.php?mid=<?php echo $result_row['mediaid'];?>" target='_blank'>Add to Playlist</a>
             </span>
 			
 			<canvas width="34" height="34" class="ring-progress" style="width:34px;height:34px;left:-3px;top:-3px;">
