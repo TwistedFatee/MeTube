@@ -34,6 +34,27 @@ ini_set('session.save_path','/home/cai7/temp');
 session_start();
 include_once "function.php";
 
+?>
+
+	
+        <form name = "loginForm" method = "post" action="<?php echo "login.php"; ?>">
+            <div class = "item">
+                <label>Username</label>
+                <input id = "username" name  = "username" type = "text" class = "basic_input" tabindex = "1" maxlength = "20" >
+                <div id = "name_error" class = "val_error"></div>
+            </div>
+            <div class = "item">
+                <label>Password</label>
+                <input id = "password" name = "password" type = "password" class = "basic_input" tabindex = "2" maxlength = "20" placeholder = "Password">
+                <div id = "password_error" class = "val_error"></div>
+            </div>
+            <div>
+                <label>&nbsp;</label>
+                <input type = "submit" name = "login_submit" id = "Login_submit" value = "Login" class = "login_submit">
+            </div>
+        </form>
+    </div>
+<?php
 if(isset($_POST['login_submit'])) {
 	if($_POST['username'] == "" || $_POST['password'] == "") {
 		$login_error = "One or more fields are missing.";
@@ -60,9 +81,19 @@ if(isset($_POST['login_submit'])) {
 				else{
 					$row = mysql_fetch_row($result);
 					//Set the $_SESSION variables
-					$_SESSION['password']=$password;	
+						
 					$_SESSION['username']=$username;
 					$_SESSION['userid']=$row[0];
+					$_SESSION['start']=time();					
+					$randomstring=generateRandomString();
+					$_SESSION['randomstring']=$randomstring;
+					
+					$query="update account set randomstring='$randomstring' where userid='$row[0]'";
+					$result=mysql_query($query);
+					if (!$result)
+					{
+						die ("Cannot update randomstring. Could not query the database: <br />". mysql_error());
+					}
 				}
 				
 				$updateaccesstime="update account set lastaccesstime=NOW() where userid='$row[0]'";
@@ -72,7 +103,11 @@ if(isset($_POST['login_submit'])) {
 					die ("Could not query the database account and update access time: <br />". mysql_error());
 				}
 				
-				$url = "index.php?user=".$username;
+				if(isset($mid)){
+					$url="vedio.php?mid=".$mid;
+				}else{
+				
+				$url = "index.php?user=".$username;}
 				echo "<meta http-equiv=\"refresh\" content=\"0;url=$url\">";
 			}				
 		}
@@ -80,24 +115,6 @@ if(isset($_POST['login_submit'])) {
 }
  
 ?>
-	
-        <form name = "loginForm" method = "post" action="<?php echo "login.php"; ?>">
-            <div class = "item">
-                <label>Username</label>
-                <input id = "username" name  = "username" type = "text" class = "basic_input" tabindex = "1" maxlength = "20" >
-                <div id = "name_error" class = "val_error"></div>
-            </div>
-            <div class = "item">
-                <label>Password</label>
-                <input id = "password" name = "password" type = "password" class = "basic_input" tabindex = "2" maxlength = "20" placeholder = "Password">
-                <div id = "password_error" class = "val_error"></div>
-            </div>
-            <div>
-                <label>&nbsp;</label>
-                <input type = "submit" name = "login_submit" id = "Login_submit" value = "Login" class = "login_submit">
-            </div>
-        </form>
-    </div>
 <?php
   if(isset($login_error)){  
     echo "<br><br>";

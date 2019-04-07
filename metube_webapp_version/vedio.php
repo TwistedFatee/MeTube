@@ -27,16 +27,42 @@ session_start();
 include_once "function.php";
 ?>
 
-	<p>Welcome <?php echo $_SESSION['username'];?></p>
-	<p>Welcome <?php echo $_SESSION['userid'];?></p>
 <?php
+	if (isset($_SESSION['username'])){
+?>
+
+		<p>Welcome <?php echo $_SESSION['username'];?></p>
+	
+<?php
+		if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){			
+			$checkrandomstring=user_randomstring_check($_SESSION['userid'], $_SESSION['randomstring']);
+			if($checkrandomstring == 0){
+				$userid=$_SESSION['userid'];
+				$randomstring=$_SESSION['randomstring'];
+			}
+		}
+	
+	}
+	else{
+?>
+	<p>Welcome </p>
+	
+<?php
+	}
+
+	$ip=$_SERVER['REMOTE_ADDR'];
+	
 if(isset($_GET['mid'])) {
 	$query = "SELECT * FROM media WHERE mediaid='".$_GET['mid']."'";
 	$result = mysql_query( $query );
 	$result_row = mysql_fetch_assoc($result);
 	
 	updateMediaTime($_GET['mid']);
-	updateViews($_GET['mid']);
+	if(isset($userid) && isset($randomstring)){
+		updateViews($_GET['mid'],$ip, $userid);
+	}else{
+		updateViews($_GET['mid'],$ip, 0);
+	}
 	
 	$filename=$result_row['filename'];
 	$filepath=$result_row['filepath'];
@@ -44,7 +70,7 @@ if(isset($_GET['mid'])) {
 	if(substr($type,0,5)=="image") //view image
 	{
 		echo "Viewing Picture:";
-		echo $result_row['filepath'].$result_row['filename'];
+		echo $result_row['medianame'];
 		echo "<br>";
 		echo "<img src='".$filepath.$filename."'/>";
 	}
@@ -53,13 +79,13 @@ if(isset($_GET['mid'])) {
 ?>	
 
 	<p>Viewing Video:<?php echo $result_row['medianame'];?></p>
-	<object id="MediaPlayer" align="middle" width=420 height=386 classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95" standby="Loading Windows Media Player components…" type="application/x-oleobject" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112">
+	<object id="MediaPlayer" align="middle" width=960 height=580 classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95" standby="Loading Windows Media Player components…" type="application/x-oleobject" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112">
 
 <param name="filename" value="<?php echo $result_row['filepath'].$result_row['filename'];  ?>">
 <param name="Showcontrols" value="True">
 <param name="autoStart" value="True">
 
-<embed type="application/x-mplayer2" src="<?php echo $result_row['filepath'].$result_row['filename'];  ?>" name="MediaPlayer" width=420 height=340></embed>
+<embed type="application/x-mplayer2" src="<?php echo $result_row['filepath'].$result_row['filename'];  ?>" name="MediaPlayer" width=960 height=540></embed>
 
 </object>
 	
@@ -153,71 +179,6 @@ else
         </div>
     </div>
 
-<script type="text/javascript" src="js/comment.js"></script>
-<script type="text/javascript">
-    var video = document.querySelector("video");
-    var isPlay = document.querySelector(".switch");
-    var expand = document.querySelector(".expand");
-    var progress = document.querySelector(".progress");
-    var loaded = document.querySelector(".progress > .loaded");
-    var currPlayTime = document.querySelector(".timer > .current");
-    var totalTime = document.querySelector(".timer > .total");
 
-    video.oncanplay = function(){
-        this.style.display = "block";
-        totalTime.innerHTML = getFormatTime(this.duration);
-    };
-
-    isPlay.onclick = function(){
-        if(video.paused) {
-            video.play();
-        } else {
-            video.pause();
-        }
-        this.classList.toggle("fa-pause");
-    };
-
-    expand.onclick = function(){
-        video.webkitRequestFullScreen();
-    };
-
-    video.ontimeupdate = function(){
-        var currTime = this.currentTime,    
-            duration = this.duration;       
-
-        var pre = currTime / duration * 100 + "%";
-        
-        loaded.style.width = pre;
-
-        currPlayTime.innerHTML = getFormatTime(currTime);
-    };
-
-    progress.onclick = function(e){
-        var event = e || window.event;
-        video.currentTime = (event.offsetX / this.offsetWidth) * video.duration;
-    };
-
-    video.onended = function(){
-        var that = this;
-        isPlay.classList.remove("fa-pause");
-        isPlay.classList.add("fa-play");
-        loaded.style.width = 0;
-        currPlayTime.innerHTML = getFormatTime();
-        that.currentTime = 0;
-    };
-
-    function getFormatTime(time) {
-        var time = time || 0;
-
-        var h = parseInt(time/3600),
-            m = parseInt(time%3600/60),
-            s = parseInt(time%60);
-        h = h < 10 ? "0"+h : h;
-        m = m < 10 ? "0"+m : m;
-        s = s < 10 ? "0"+s : s;
-
-        return h+":"+m+":"+s;
-    }
-</script>
 </body>
 </html>

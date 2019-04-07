@@ -59,6 +59,36 @@ function user_pass_check($username, $password)
 	}	
 }
 
+function generateRandomString() {
+	$length = 10;
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+function user_randomstring_check($userid, $randomstring)
+{
+	
+	$query = "select * from account where userid='$userid'";
+	$result = mysql_query( $query );
+		
+	if (!$result)
+	{
+	   die ("user_randomstring_check() failed. Could not query the database: <br />". mysql_error());
+	}
+	else{
+		$row = mysql_fetch_assoc($result);
+		if(strcmp($row['randomstring'],$randomstring))
+			return 1; //wrong randomstring
+		else 
+			return 0; //Checked.
+	}	
+}
+
 function updateMediaTime($mediaid)
 {
 	$query = "	update  media set lastaccesstime=NOW()
@@ -73,7 +103,7 @@ function updateMediaTime($mediaid)
 
 }
 
-function updateViews($mediaid)
+function updateViews($mediaid,$ip, $userid)
 {	
 	$query = "	update  media set views=views+1
    						WHERE '$mediaid' = mediaid
@@ -82,7 +112,34 @@ function updateViews($mediaid)
     $result = mysql_query( $query );
 	if (!$result)
 	{
-	   die ("updateMediaTime() failed. Could not query the database: <br />". mysql_error());
+	   die ("updateViews() failed. Could not query the database media: <br />". mysql_error());
+	}
+	if ($userid == 0){
+		$query = "insert into view(ip, mediaid) values('$ip','$mediaid')";
+					 // Run the query created above on the database through the connection
+		$result = mysql_query( $query );
+		if (!$result)
+		{
+		die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
+		}
+		
+	}else{
+		$query = "	insert into view(userid, ip, mediaid) values('$userid','$ip','$mediaid')";
+					 // Run the query created above on the database through the connection
+		$result = mysql_query( $query );
+		if (!$result)
+		{
+		die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
+		}
+	}
+	
+	$viewid=mysql_insert_id();
+	$query = "	update view set viewtime=NOW() where viewid='$viewid'";
+					 // Run the query created above on the database through the connection
+    $result = mysql_query( $query );
+	if (!$result)
+	{
+	   die ("updateMediaTime() failed. Cannot update viewtime. Could not query the database view: <br />". mysql_error());
 	}
 }
 
@@ -108,6 +165,13 @@ function deleteMedia($mediaid){
 	   die ("deleteMedia() failed. Could not query the database plistmedia: <br />". mysql_error());
 	}
 	
+	$q="delete from view where mediaid='$mediaid'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("deleteMedia() failed. Could not query the database view: <br />". mysql_error());
+	}
+	
 	$q="delete from media where mediaid='$mediaid'";
 	$result=mysql_query($q);
 	if (!$result)
@@ -119,6 +183,9 @@ function deleteMedia($mediaid){
 }
 
 
+function createPlayList($userid, $listname){
+	
+}
 
 function removePlayList($playlistid){
 	$q="delete from plistmedia where playlistid='$playlistid'";

@@ -3,15 +3,22 @@ ini_set('session.save_path','/home/cai7/temp');
 session_start();
 include_once "function.php";
 
-if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 	$username=$_SESSION['username'];
 	$userid=$_SESSION['userid'];
-	$password=$_SESSION['password'];
+	$randomstring=$_SESSION['randomstring'];
 
-	$checkuser=user_pass_check($username, $password);
+	$checkuser=user_randomstring_check($userid, $randomstring);
 	if($checkuser!=0){
 		header('Location:require_login.php');
-	}		
+	}
+
+	$current=time();
+	$start=$_SESSION['start'];
+	if ($current - $start > 30*60){		//more than 30 mins
+		header('Location:require_login.php');
+	}
+	
 }
 else
 {

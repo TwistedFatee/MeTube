@@ -9,9 +9,16 @@ include_once "function.php";
 *
 *******************************************************/
 if (isset($_GET['mid'])){
+	if(isset($_SESSION['start'])){
+		$current=time();
+		$start=$_SESSION['start'];
+		if ($current - $start > 30*60){		//more than 30 mins
+			header('Location:require_login.php');
+		}
+	}
 
-	if (isset($_SESSION['username']) && isset($_SESSION['password'])){
-		$userlogin=user_pass_check($_SESSION['username'],$_SESSION['password']);
+	if (isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
+		$userlogin=user_randomstring_check($_SESSION['userid'],$_SESSION['randomstring']);
 		if($userlogin==0){
 			$userid=$_SESSION['userid'];
 			$mediaid=$_GET['mid'];

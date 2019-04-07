@@ -14,16 +14,36 @@
 </head>
 
 <body>
+<?php
+if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
+	$checkstring=user_randomstring_check($_SESSION['userid'],$_SESSION['randomstring']);
+	if($checkstring == 0){
+?>
+
+
 <p>Welcome <?php echo $_SESSION['username'];?></p>
+
+<?php
+	}
+	else{
+		echo "Welcome<br>";
+	}
+}
+else{
+		echo "Welcome<br>";
+	}
+?>
 <a href='media_upload.php'  style="color:#FF9900;">Upload File</a>
 <div id='upload_result'>
 <?php 
+
 	if(isset($_REQUEST['result']) && $_REQUEST['result']!=0)
 	{
 		
 		echo upload_error($_REQUEST['result']);
 
 	}
+
 ?>
 </div>
 <br/><br/>

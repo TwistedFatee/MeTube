@@ -14,9 +14,12 @@
 	</div>
 	
 	<div>
-		<p>Please login before uploading file!</p>
+		<p>Please login!</p>
 		<br><br>
-		<a href="index.php">Login</a>
+		
+
+		<a href="login.php">Login</a>
+
 	</div>
 </body>
 </html>

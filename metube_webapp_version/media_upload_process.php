@@ -8,14 +8,14 @@ include_once "function.php";
 * upload document from user
 *
 *******************************************************/
-if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 
 
 	$username=$_SESSION['username'];
 	$userid=$_SESSION['userid'];
-	$password=$_SESSION['password'];
+	$randomstring=$_SESSION['randomstring'];
 
-	$checkuser=user_pass_check($username, $password);
+	$checkuser=user_randomstring_check($userid, $randomstring);
 	if($checkuser==0){
 
 	//Create Directory if doesn't exist
