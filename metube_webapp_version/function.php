@@ -115,25 +115,70 @@ function updateViews($mediaid,$ip, $userid)
 	   die ("updateViews() failed. Could not query the database media: <br />". mysql_error());
 	}
 	if ($userid == 0){
-		$query = "insert into view(ip, mediaid) values('$ip','$mediaid')";
+		$query = "select * from view where ip='$ip' and mediaid='$mediaid' and userid=0";
 					 // Run the query created above on the database through the connection
 		$result = mysql_query( $query );
 		if (!$result)
-		{
-		die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
+		{	
+			die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
+		}
+		
+		$numrows=mysql_num_rows($result);
+		
+		if($numrows==0){
+			$query = "insert into view(ip, mediaid) values('$ip','$mediaid')";
+					 // Run the query created above on the database through the connection
+			$result = mysql_query( $query );
+			if (!$result)
+			{
+				die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
+			}
+			$viewid=mysql_insert_id();
+		}
+		else{
+			$r=mysql_fetch_assoc($result);
+			$viewid=$r['viewid'];
 		}
 		
 	}else{
-		$query = "	insert into view(userid, ip, mediaid) values('$userid','$ip','$mediaid')";
+		$query = "select * from view where mediaid='$mediaid' and userid='$userid'";
 					 // Run the query created above on the database through the connection
 		$result = mysql_query( $query );
 		if (!$result)
-		{
-		die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
+		{	
+			die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
+		}
+		
+		$numrows=mysql_num_rows($result);
+		
+		if($numrows==0){
+			$query = "insert into view(ip, mediaid,userid) values('$ip','$mediaid','$userid')";
+					 // Run the query created above on the database through the connection
+			$result = mysql_query( $query );
+			if (!$result)
+			{
+				die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
+			}
+			$viewid=mysql_insert_id();
+		}
+		else{		
+			$r=mysql_fetch_assoc($result);
+			if ($r['ip'] == $ip){
+				$viewid=$r['viewid'];
+			}else{
+				$query = "insert into view(ip, mediaid,userid) values('$ip','$mediaid','$userid')";
+					 // Run the query created above on the database through the connection
+				$result = mysql_query( $query );
+				if (!$result)
+				{
+					die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
+				}
+				$viewid=mysql_insert_id();
+			}
+			
 		}
 	}
 	
-	$viewid=mysql_insert_id();
 	$query = "	update view set viewtime=NOW() where viewid='$viewid'";
 					 // Run the query created above on the database through the connection
     $result = mysql_query( $query );
@@ -327,6 +372,10 @@ function leaveGroup($userid, $groupid){
 		return 0;
 	}
 }
+
+
+
+
 
 function upload_error($result)
 {

@@ -37,16 +37,31 @@ if (isset($_GET['mid'])){
 	
 				//insert into download table
 				
-				$insertDownload="insert into download(userid, mediaid) values('$userid','$mediaid')";
-				$queryresult = mysql_query($insertDownload);
+				$query="select * from download where userid='$userid' and mediaid='$mediaid'";
+				$result=mysql_query($query);
+				if (!$result){
+					die("cannot find the media. Could not query the database:<br>".mysql_error());
+				}
+				$numrows=mysql_num_rows($result);
+				if($numrows == 0){
+				
+					$insertDownload="insert into download(userid, mediaid) values('$userid','$mediaid')";
+					$queryresult = mysql_query($insertDownload);
 
-				if(!$queryresult){
-					die("media_download_process error. Could not query the database download: <br />". mysql_error());
+					if(!$queryresult){
+						die("media_download_process error. Could not query the database download: <br />". mysql_error());
+					}
+				}else{
+					$query="update download set downloadtime=NOW() where userid='$userid' and mediaid='$mediaid'";
+					$result=mysql_query($query);
+					if (!$result){
+						die("cannot find the media. Could not query the database:<br>".mysql_error());
+					}
 				}
 				
 				$updatedownloads="update media set downloads=downloads+1 where mediaid='$mediaid'";
 				$updateresult=mysql_query($updatedownloads);
-				if(!$queryresult){
+				if(!$updateresult){
 					die("media_download_process error. Could not query the database media: <br />". mysql_error());
 				}
 			}

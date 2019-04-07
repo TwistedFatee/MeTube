@@ -9,10 +9,11 @@
 
 	}
 	
-	if(isset($_SESSION['username']) && isset($_SESSION['password'])){
-		$username = $_SESSION['username'];			
-		$password = $_SESSION['password'];
-		$result = user_pass_check($username, $password);
+	if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
+		$username = $_SESSION['username'];
+		$userid=$_SESSION['id'];
+		$randomstring = $_SESSION['randomstring'];
+		$result = user_randomstring_check($userid, $randomstring);
 		if($result == 0){
 			
 		}
