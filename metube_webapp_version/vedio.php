@@ -53,6 +53,7 @@ include_once "function.php";
 	$ip=$_SERVER['REMOTE_ADDR'];
 	
 if(isset($_GET['mid'])) {
+	$mediaid = $_GET['mid'];
 	$query = "SELECT * FROM media WHERE mediaid='".$_GET['mid']."'";
 	$result = mysql_query( $query );
 	$result_row = mysql_fetch_assoc($result);
@@ -95,7 +96,7 @@ if(isset($_GET['mid'])) {
 else
 {
 ?>
-<meta http-equiv="refresh" content="0;url=browse.php">
+<meta http-equiv="refresh" content="0;url=index.php">
 <?php
 }
 ?>
@@ -137,27 +138,51 @@ else
 </div>
     <div class="container">
         <div class="comment-send">
-            <form id="commentForm" method="GET" action="http://127.0.0.1:8888/comment">
+		
+            <form id="commentForm" method="POST" action="comment.php?mid=<?php echo $mediaid;?>">
                 <span class="comment-avatar">
                     <img src="images/frog.jpeg" alt="profile">
-                </span>
+                </span>			
                 <textarea class="comment-send-input" name="comment" form="commentForm" cols="80" rows="5" placeholder="Add a public comment..."></textarea>
                 <input class="comment-send-button" type="submit" value="Comment">
             </form>
         </div>
         <div class="comment-list" id="commentList">
+		
+<?php
+$q="select username, comment, comment.createtime as ctime 
+	from comment inner join media inner join account on comment.userid=account.userid 
+	where comment.mediaid='$mediaid'";
+$r=mysqli_query($q);
+if(!r){
+	die("Cannot query comments from table comment, account.<br>".mysql_error());
+}
+
+$result=mysqli_fetch_assoc($r);
+if(mysqli_num_rows($result) != 0){
+
+?>
             <div class="comment">
                 <span class="comment-avatar">
                     <img src="images/frog.jpeg" alt="avatar">
                 </span>
                 <div class="comment-content">
+<?php
+	while($result){
+		$username = $result['username'];
+		$time=$result['ctime'];
+		$comment=
+?>
                     <p class="comment-content-name">Daniel</p>
                     <p class="comment-content-article">Amazing!</p>
-                    <p class="comment-content-footer">
-                        <span class="comment-content-footer-id">#2</span>
+                    <p class="comment-content-footer">   
                         <span class="comment-content-footer-device">From iPhone</span>
                         <span class="comment-content-footer-timestamp">2019-03-10 14:25</span>
                     </p>
+<?php
+	}
+}
+?>
                 </div>
                 <div class="cls"></div>
             </div>
