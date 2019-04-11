@@ -24,13 +24,16 @@
 	session_start();	
 	include_once "function.php";
 	
+	$userlogin = FALSE;
 	if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 		$userid = $_SESSION['userid'];			
 		$randomstring= $_SESSION['randomstring'];
 		$username=$_SESSION['username'];
 		$result = user_randomstring_check($userid, $randomstring);
-		if($result == 0)
-			echo "Welcome ".$username."<span> | </span><a href=\"profile.php\">Account</a><span> | </span><a href=\"logout.php\">Log Out</a><span> | </span>";
+		if($result == 0){
+			$userlogin = TRUE;
+			echo "Welcome ".$username."<span> | </span><a href=\"userprofile.php?uid=".$userid."\">Account</a><span> | </span><a href=\"logout.php\">Log Out</a><span> | </span>";
+		}
 		else
 			echo "<a href=\"login.php\">Sign In</a><span> | </span><a href=\"register.php\">Sign Up</a><span> | </span>";
 				
@@ -93,17 +96,16 @@
     <div class="content">
         <div class="container">
 <?php	
-if(isset($_SESSION['userid'])){
-	$uid=$_SESSION['userid'];
+if($userlogin){
+	$uid=$_SESSION['userid'];			
+	//recently views by userid 		
+	$q="select * from view inner join media on view.mediaid=media.mediaid where view.userid='$uid' group by view.mediaid order by viewtime desc limit 8";	
+}else{
+	$ip = $_SERVER['REMOTE_ADDR'];
+	$q="select * from view inner join media on view.mediaid=media.mediaid where view.ip='$ip' and view.userid=0 order by view.viewtime desc limit 8";
 			
-	//recently views by userid 
-		
-		$q="select * from view inner join media on view.mediaid=media.mediaid where view.userid='$uid' order by viewtime desc limit 8";			
-		$r=mysql_query($q);
-		if(!$r){
-			 die ("Could not query the database view: <br />". mysql_error());
-		}
-		
+}	
+		$r=mysql_query($q) or die ("Could not query the database view: <br />". mysql_error());
 		
 ?>
 		
@@ -128,7 +130,10 @@ if(isset($_SESSION['userid'])){
                 </ul>
             </div>
 		
-		<?php	//recently uploaded media 
+		<?php
+
+
+		//recently uploaded media 
 		$q="select * from media where permission='public' order by uploadtime desc limit 8";
 		
 		
@@ -161,16 +166,13 @@ if(isset($_SESSION['userid'])){
                 </ul>
             </div>
 			
-		<?php	//recently uploaded group-only media 	
+		<?php	
+		if($userlogin){//recently uploaded group-only media 	
 		$q="select * from media where userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid'))
 		 order by uploadtime desc limit 8";
 		
 		
-		$r=mysql_query($q);
-		if(!$r){
-			 die ("Could not query the database groupmember: <br />". mysql_error());
-		}
-		
+		$r=mysql_query($q) or die ("Could not query the database groupmember: <br />". mysql_error());		
 		
 		?>
 			<div class="recently upload">
@@ -191,10 +193,43 @@ if(isset($_SESSION['userid'])){
 					</tr>
 				<?php
 				}
+		}
 				?>
                 </ul>
             </div>
 			
+			<?php	//most views
+		$q="select * from media where permission='public' order by views desc limit 8";
+		
+		
+		$r=mysql_query($q);
+		if(!$r){
+			 die ("Could not query the database view: <br />". mysql_error());
+		}
+		
+		
+		?>
+			<div class="recently upload">
+                <p class="recommend clearfloat">Most Views</p>
+                <ul class="clearfloat">
+				<?php
+				while ($result_row = mysql_fetch_assoc($r))
+				{ 
+					$mname=$result_row['medianame'];
+				?>			
+                    <tr>			
+					
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+					</td>
+					
+					<br>
+					</tr>
+				<?php
+				}
+				?>
+                </ul>
+            </div>
 		
             <div class="movies">
                 <p class="recommend clearfloat">Recommend</p>
@@ -236,7 +271,7 @@ if(isset($_SESSION['userid'])){
                 <p class="recommend clearfloat">Vedio</p>
                 <ul class="clearfloat">
 				<p>Public</p>
-		<?php	//recently uploaded media 
+		<?php	//vedios
 		$q="select * from media where permission='public' and type like 'video%' order by uploadtime desc limit 4";
 		
 		
@@ -265,19 +300,18 @@ if(isset($_SESSION['userid'])){
 				<?php
 				}
 				?>
-				<p>Group</p>
-		<?php	//recently uploaded vedio group-only 	
+				
+		<?php	
+		if ($userlogin){
+		//recently uploaded vedio group-only 	
 		$q="select * from media where type like 'video%' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid'))
 		 order by uploadtime desc limit 4";
 		
 		
-		$r=mysql_query($q);
-		if(!$r){
-			 die ("Could not query the database groupmember: <br />". mysql_error());
-		}
+		$r=mysql_query($q) or die ("Could not query the database groupmember: <br />". mysql_error());		
 		
-		
-		?>
+		?>	
+				<p>Group</p>
 				<?php
 				while ($result_row = mysql_fetch_assoc($r))
 				{ 
@@ -293,6 +327,7 @@ if(isset($_SESSION['userid'])){
 					</tr>
 				<?php
 				}
+		}
 				?>
 				
                 </ul>
@@ -302,7 +337,7 @@ if(isset($_SESSION['userid'])){
                 <p class="recommend clearfloat">Audio</p>
                 <ul class="clearfloat">
 				<p>Public</p>
-		<?php	//recently uploaded media 
+		<?php	//audios
 		$q="select * from media where permission='public' and type like 'audio%' order by uploadtime desc limit 4";
 		
 		
@@ -331,19 +366,18 @@ if(isset($_SESSION['userid'])){
 				<?php
 				}
 				?>
-				<p>Group</p>
-		<?php	//recently uploaded vedio group-only 	
+				
+		<?php	
+		if ($userlogin){
+		//group audios	
 		$q="select * from media where type like 'audio%' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid'))
 		 order by uploadtime desc limit 4";
 		
 		
-		$r=mysql_query($q);
-		if(!$r){
-			 die ("Could not query the database groupmember: <br />". mysql_error());
-		}
-		
+		$r=mysql_query($q) or die ("Could not query the database groupmember: <br />". mysql_error());		
 		
 		?>
+				<p>Group</p>
 				<?php
 				while ($result_row = mysql_fetch_assoc($r))
 				{ 
@@ -359,6 +393,7 @@ if(isset($_SESSION['userid'])){
 					</tr>
 				<?php
 				}
+		}
 				?>
 				
                 </ul>
@@ -369,15 +404,11 @@ if(isset($_SESSION['userid'])){
                 <p class="recommend clearfloat">Image</p>
                 <ul class="clearfloat">
 				<p>Public</p>
-		<?php	//recently uploaded media 
+		<?php	//public image
 		$q="select * from media where permission='public' and type like 'image%' order by uploadtime desc limit 4";
 		
 		
-		$r=mysql_query($q);
-		if(!$r){
-			 die ("Could not query the database view: <br />". mysql_error());
-		}
-		
+		$r=mysql_query($q) or die ("Could not query the database view: <br />". mysql_error());		
 		
 		?>
 				
@@ -398,19 +429,18 @@ if(isset($_SESSION['userid'])){
 				<?php
 				}
 				?>
-				<p>Group</p>
-		<?php	//recently uploaded vedio group-only 	
+				
+		<?php	
+		if ($userlogin){
+		//group images
 		$q="select * from media where type like 'image%' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid'))
 		 order by uploadtime desc limit 4";
 		
 		
-		$r=mysql_query($q);
-		if(!$r){
-			 die ("Could not query the database groupmember: <br />". mysql_error());
-		}
-		
+		$r=mysql_query($q) or die ("Could not query the database groupmember: <br />". mysql_error());		
 		
 		?>
+				<p>Group</p>
 				<?php
 				while ($result_row = mysql_fetch_assoc($r))
 				{ 
@@ -426,6 +456,7 @@ if(isset($_SESSION['userid'])){
 					</tr>
 				<?php
 				}
+		}
 				?>
 				
                 </ul>
@@ -434,74 +465,6 @@ if(isset($_SESSION['userid'])){
     </div>
    </div>
    
-<?php
-} 
-   else{
-			$ip = $_SERVER['REMOTE_ADDR'];
-			$q="select * from view inner join media on view.mediaid=media.mediaid where view.ip='$ip' and view.userid=0 order by view.viewtime desc limit 8";
-			$r=mysql_query($q);
-			if(!$r){
-				die ("Could not query the database view: <br />". mysql_error());
-			}
-		
-		
-?>
-		
-			<div class="recently view">
-                <p class="recommend clearfloat">Recently Views</p>
-                <ul class="clearfloat">
-				<?php
-				while ($result_row = mysql_fetch_assoc($r))
-				{ 
-					$mname=$result_row['medianame'];
-				?>			
-                    <tr>			
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					
-					<br>
-					</tr>
-				<?php
-				}
-				?>
-                </ul>
-            </div>
-		
-		<?php	//recently uploaded media 
-		$q="select * from media where permission='public' order by uploadtime desc limit 8";
-		
-		
-		$r=mysql_query($q);
-		if(!$r){
-			 die ("Could not query the database view: <br />". mysql_error());
-		}
-		
-		
-		?>
-			<div class="recently upload">
-                <p class="recommend clearfloat">Recently Public Uploads</p>
-                <ul class="clearfloat">
-				<?php
-				while ($result_row = mysql_fetch_assoc($r))
-				{ 
-					$mname=$result_row['medianame'];
-				?>			
-                    <tr>			
-					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					
-					<br>
-					</tr>
-				<?php
-				}
-				?>
-                </ul>
-            </div>
-<?php
-		}
-?>
+
 </body>
 </html>

@@ -24,10 +24,9 @@ $userid=$_SESSION['userid'];
 				if ($addtolist == 1){
 				echo "Fail to add media to your play list!";}
 				else{
-		
-			
-				$content="0;url=vedio.php?mid=".$mediaid;
-				echo "<meta http-equiv=\"refresh\" content=\"$content\">";}
+					$content="0;url=vedio.php?mid=".$mediaid;
+					echo "<meta http-equiv=\"refresh\" content=\"$content\">";
+				}
 			}
 		}
 		else{
@@ -38,14 +37,18 @@ $userid=$_SESSION['userid'];
 			{
 				die ("Could not query the database playlist: <br />". mysql_error());
 			}
-			$result=mysql_fetch_row($r);
+			$result=mysql_fetch_row($r);			
 			$listid=$result[0];
 			$addtolist=addToPlaylist($listid, $mediaid);
-			echo "Successfully add to your play list!";
-		
-			sleep(2);
-			$content="0;url=vedio.php?mid=".$mediaid;
-			echo "<meta http-equiv=\"refresh\" content=\"$content\">";
+			if ($addtolist == 0){
+				echo "Successfully add to your play list!";		
+				sleep(3);
+				$content="0;url=vedio.php?mid=".$mediaid;
+				echo "<meta http-equiv=\"refresh\" content=\"$content\">";}
+			else{
+				echo "This file already exists in playlist:  ".$listname;
+				
+			}
 		}
 	}
 

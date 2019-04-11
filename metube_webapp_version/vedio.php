@@ -120,7 +120,7 @@ else
             
             <span title="Favorites" class="playlist">
                 <i class="iconfont" style="color: grey; font-weight: bold;">&#xe63f;</i>
-                <a href="playlist.php?mid=<?php echo $result_row['mediaid'];?>" target='_blank'>Add to Playlist</a>
+                <a href="playlist.php?mid=<?php echo $result_row['mediaid'];?>" >Add to Playlist</a>
             </span>
 			
 			<canvas width="34" height="34" class="ring-progress" style="width:34px;height:34px;left:-3px;top:-3px;">
@@ -139,68 +139,67 @@ else
     <div class="container">
         <div class="comment-send">
 		
-            <form id="commentForm" method="POST" action="comment.php?mid=<?php echo $mediaid;?>">
+            <form name='postcomment' method="POST" action="comment.php">
                 <span class="comment-avatar">
                     <img src="images/frog.jpeg" alt="profile">
                 </span>			
                 <textarea class="comment-send-input" name="comment" form="commentForm" cols="80" rows="5" placeholder="Add a public comment..."></textarea>
-                <input class="comment-send-button" type="submit" value="Comment">
+				<input type='hidden' name='mid' value=<?php echo $mediaid;?>>
+                <input class="comment-send-button" type="submit" value="Submit">
             </form>
         </div>
+		
+
+		
+
         <div class="comment-list" id="commentList">
 		
 <?php
-$q="select username, comment, comment.createtime as ctime 
-	from comment inner join media inner join account on comment.userid=account.userid 
-	where comment.mediaid='$mediaid'";
-$r=mysqli_query($q);
-if(!r){
-	die("Cannot query comments from table comment, account.<br>".mysql_error());
+$q="select * from comment where mediaid='$mediaid' order by createtime desc";
+$r=mysql_query($q);
+
+if(!$r){
+	die("Cannot query comments from table comment.<br>".mysql_error());
 }
 
-$result=mysqli_fetch_assoc($r);
-if(mysqli_num_rows($result) != 0){
+
+
+
+	
 
 ?>
-            <div class="comment">
+            
+<?php
+	while($result=mysql_fetch_assoc($r)){
+		$uid=$result['userid'];
+		$q="select username from account where userid='$uid'";
+		
+		$r2 = mysql_query($q) or die("Cannot query table account.<br>".mysql_error());
+		$commentuser=mysql_fetch_row($r2);
+		$commentuser=$commentuser[0];
+		$time=$result['createtime'];
+		$commentcontent=$result['comment'];
+
+?>
+			<div class="comment">
                 <span class="comment-avatar">
                     <img src="images/frog.jpeg" alt="avatar">
                 </span>
                 <div class="comment-content">
-<?php
-	while($result){
-		$username = $result['username'];
-		$time=$result['ctime'];
-		$comment=
-?>
-                    <p class="comment-content-name">Daniel</p>
-                    <p class="comment-content-article">Amazing!</p>
+                    <p class="comment-content-name"><?php echo $commentuser;?></p>
+                    <p class="comment-content-article"><?php echo $commentcontent;?></p>
                     <p class="comment-content-footer">   
-                        <span class="comment-content-footer-device">From iPhone</span>
-                        <span class="comment-content-footer-timestamp">2019-03-10 14:25</span>
+                        <span class="comment-content-footer-timestamp"><?php echo $time;?></span>
                     </p>
+				</div>
+                <div class="cls"></div>
+            </div>
 <?php
 	}
-}
+
 ?>
-                </div>
-                <div class="cls"></div>
-            </div>
-            <div class="comment comment-bottom">
-                <span class="comment-avatar">
-          <img src="images/frog.jpeg" alt="avatar">
-        </span>
-                <div class="comment-content">
-                    <p class="comment-content-name">Michael</p>
-                    <p class="comment-content-article">Very helpful!</p>
-                    <p class="comment-content-footer">
-                        <span class="comment-content-footer-id">#1</span>
-                        <span class="comment-content-footer-device">From Windows</span>
-                        <span class="comment-content-footer-timestamp">2019-03-15 13:15</span>
-                    </p>
-                </div>
-                <div class="cls"></div>
-            </div>
+                
+            
         </div>
     </div>
 

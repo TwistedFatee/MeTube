@@ -16,11 +16,22 @@ include_once "function.php";
 <form method="post" action="playlistprocess.php" enctype="multipart/form-data" >
 <?php
 
-if(isset($_SESSION['userid']) && $_SESSION['userid']>0 && isset($_SESSION['randomstring']) && isset($_GET['mid'])){			
+if(isset($_SESSION['userid']) && isset($_SESSION['randomstring']) && isset($_GET['mid'])){			
 	$checkrandomstring=user_randomstring_check($_SESSION['userid'], $_SESSION['randomstring']);
-	if($checkrandomstring == 0){
+	
+	if($checkrandomstring!=0){
+		header('Location:require_login.php');
+	}
+
+	$current=time();
+	$start=$_SESSION['start'];
+	if ($current - $start > 30*60){		//more than 30 mins
+		header('Location:require_login.php');
+	}
+	
+	
 		$userid=$_SESSION['userid'];
-		$mediaid=$_GET['mid'];
+		$mediaid=$_REQUEST['mid'];
 		
 		$q="select * from playlist where userid='$userid'";
 		$r=mysql_query($q);
@@ -56,18 +67,19 @@ if(isset($_SESSION['userid']) && $_SESSION['userid']>0 && isset($_SESSION['rando
 
 </body>
 </html>
+
+
+
 		
 <?php
 
 		
-	}else{
-		echo "<meta http-equiv=\"refresh\" content=\"0;url=login.php\">";
-	}
+	
 	
 	
 }
 else
-	echo "<meta http-equiv=\"refresh\" content=\"0;url=index.php\">";
+	echo "<meta http-equiv=\"refresh\" content=\"0;url=require_login.php\">";
 
 
 

@@ -52,8 +52,8 @@ function user_pass_check($username, $password)
 	}
 	else{
 		$row = mysql_fetch_assoc($result);
-		if(strcmp($row['password'],$password))
-			return 2; //wrong password
+		if(mysql_num_rows($result) == 0 || strcmp($row['password'],$password))
+			return 2; //wrong password or user does not exist
 		else 
 			return 0; //Checked.
 	}	
@@ -82,8 +82,8 @@ function user_randomstring_check($userid, $randomstring)
 	}
 	else{
 		$row = mysql_fetch_assoc($result);
-		if(strcmp($row['randomstring'],$randomstring))
-			return 1; //wrong randomstring
+		if(mysql_num_rows($result) == 0 || strcmp($row['randomstring'],$randomstring))
+			return 1; //wrong randomstring or user does not exist
 		else 
 			return 0; //Checked.
 	}	

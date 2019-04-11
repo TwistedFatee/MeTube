@@ -20,17 +20,18 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 	if ($current - $start > 30*60){		//more than 30 mins
 		header('Location:require_login.php');
 	}
+	
 	if (strlen($_POST['comment']) == 0){
 		echo "Comment cannot be empty!";
 	}
-	else if (strlen($_POST['comment']) > 65500){
+	elseif (strlen($_POST['comment']) > 65500){
 		echo "Comment cannot have more than 65k charactors!";
 	}
 	else{
-		$comment=mysqli_escape_string($_POST['comment']);
+		$comment=mysql_escape_string($_POST['comment']);
 		$mediaid=$_POST['mid'];
 		$q="insert into comment(userid, mediaid, comment, createtime) values ('$userid','$mediaid','$comment', NOW())";
-		$r=mysqli_query($q);
+		$r=mysql_query($q);
 		if(!$r){
 			die("Cannot query table comment.<br>".mysql_error());
 		}
