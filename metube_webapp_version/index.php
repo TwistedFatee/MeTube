@@ -270,7 +270,13 @@ if($userlogin){
 			<div class="vedio">
                 <p class="recommend clearfloat">Vedio</p>
                 <ul class="clearfloat">
-				<p>Public</p>
+				<?php 
+				if($userlogin){
+					?>
+					<p>Public</p>
+				<?php 
+				}
+				?>
 		<?php	//vedios
 		$q="select * from media where permission='public' and type like 'video%' order by uploadtime desc limit 4";
 		
@@ -336,7 +342,13 @@ if($userlogin){
             <div class="vedio">
                 <p class="recommend clearfloat">Audio</p>
                 <ul class="clearfloat">
-				<p>Public</p>
+				<?php 
+				if($userlogin){
+					?>
+					<p>Public</p>
+				<?php 
+				}
+				?>
 		<?php	//audios
 		$q="select * from media where permission='public' and type like 'audio%' order by uploadtime desc limit 4";
 		
@@ -403,7 +415,13 @@ if($userlogin){
 		<div class="image">
                 <p class="recommend clearfloat">Image</p>
                 <ul class="clearfloat">
-				<p>Public</p>
+				<?php 
+				if($userlogin){
+					?>
+					<p>Public</p>
+				<?php 
+				}
+				?>
 		<?php	//public image
 		$q="select * from media where permission='public' and type like 'image%' order by uploadtime desc limit 4";
 		
