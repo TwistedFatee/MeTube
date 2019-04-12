@@ -55,8 +55,14 @@ include_once "function.php";
 if(isset($_GET['mid'])) {
 	$mediaid = $_GET['mid'];
 	$query = "SELECT * FROM media WHERE mediaid='".$_GET['mid']."'";
-	$result = mysql_query( $query );
+	$result = mysql_query( $query ) or die("Cannot query media. ".mysql_error());
 	$result_row = mysql_fetch_assoc($result);
+	$uploadid=$result_row['userid'];
+	
+	$q="select * from account where userid='$uploadid'";
+	$r=mysql_query($q) or die("Cannot query account. ".mysql_error());
+	$uploadaccount=mysql_fetch_assoc($r);
+	$uploadname=$uploadaccount['username'];
 	
 	updateMediaTime($_GET['mid']);
 	if(isset($userid) && isset($randomstring)){
@@ -68,12 +74,13 @@ if(isset($_GET['mid'])) {
 	$filename=$result_row['filename'];
 	$filepath=$result_row['filepath'];
 	$type=$result_row['type'];
+	
 	if(substr($type,0,5)=="image") //view image
 	{
 		echo "Viewing Picture:";
 		echo $result_row['medianame'];
 		echo "<br>";
-		echo "<img src='".$filepath.$filename."'/>";
+		echo "<img width='900' height='600' src='".$filepath.$filename."'/>";
 	}
 	elseif(substr($type,0,5)=="audio"){
 		
@@ -113,6 +120,11 @@ else
     
 <div class="tool-bar">
         <div class="ops">
+			<p class="comment-content-footer">   
+                        <span class="comment-content-footer-timestamp">Uploaded by: <?php echo $uploadname;?></span>
+						<a href="subscribe.php?uid=<?php echo $uploadid;?>">Subscribe</a>
+            </p>
+		
             <span title="like" class="like"><i class="iconfont" style="color: grey; font-weight: bold;">&#xe60c;</i>
               <a href="favorite.php?mid=<?php echo $result_row['mediaid'];?>"> Favorite </a>
             </span>
