@@ -75,6 +75,16 @@ if(isset($_GET['mid'])) {
 		echo "<br>";
 		echo "<img src='".$filepath.$filename."'/>";
 	}
+	elseif(substr($type,0,5)=="audio"){
+		
+		echo "Viewing Audio:";
+		echo $result_row['medianame'];
+		echo "<br>";
+		echo "<audio controls autoplay><source src='".$filepath.$filename."' type='".$result_row['type']."'>";
+		echo "</audio>";
+		
+		
+	}
 	else //view movie
 	{	
 ?>	

@@ -21,6 +21,7 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 	//Create Directory if doesn't exist
 		if(!file_exists('uploads/'))
 			mkdir('uploads/', 0755);
+		
 		$dirfile = 'uploads/'.$username.$userid.'/';
 		if(!file_exists($dirfile)){
 			mkdir($dirfile, 0755);
@@ -79,6 +80,19 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 						$uploadresult=mysql_query($q);
 						if(!$uploadresult){
 							die("Uploadtime error in media_upload_process.php ".mysql_error());
+						}
+						$type = $_FILES["file"]["type"];
+						echo $type;
+						if (substr($type,0,5) == "video"){
+							$video = $dirfile.urlencode($_FILES["file"]["name"]);
+							
+							$thumbnail = "uploads/thumbs/".$mediaid.".jpg";
+							$cmd="/usr/bin/ffmpeg -deinterlace -an -ss 1 -i ".$video." -t 1 -r 1 -y -vcodec mjpeg -f mjpeg ".$thumbnail." 2>&1";
+							
+							$output = `$cmd`;
+							echo "<pre>$output</pre>";
+							chmod($thumbnail, 0644);
+ 
 						}
 					}
 				}

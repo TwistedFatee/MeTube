@@ -89,6 +89,21 @@ function user_randomstring_check($userid, $randomstring)
 	}	
 }
 
+function requirelogin($userid, $randomstring, $start){
+	$checkuser=user_randomstring_check($userid, $randomstring);
+	if($checkuser==0){
+		$current=time();
+	
+		if ($current - $start <= 30*60){		//more than 30 mins
+			return 0;
+		}
+		else 
+			return 1;
+	}
+	else
+		return 1;
+}
+
 function updateMediaTime($mediaid)
 {
 	$query = "	update  media set lastaccesstime=NOW()

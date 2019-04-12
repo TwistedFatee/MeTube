@@ -121,7 +121,24 @@ if($userlogin){
 					<td>
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+					<?php
+					if (substr($result_row['type'],0,5) == "video"){
 					
+					?>					
+						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+					<?php
+					}
+					else
+					{
+					?>					
+						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+					<?php
+					}					
+					?>					
+					</a>
+					</td>
 					<br>
 					</tr>
 				<?php
@@ -158,6 +175,25 @@ if($userlogin){
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
 					
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+					<?php
+					if (substr($result_row['type'],0,5) == "video"){
+					
+					?>					
+						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+					<?php
+					}
+					else
+					{
+					?>					
+						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+					<?php
+					}					
+					?>					
+					</a>
+					</td>
+					
 					<br>
 					</tr>
 				<?php
@@ -188,7 +224,24 @@ if($userlogin){
 					<td>
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+					<?php
+					if (substr($result_row['type'],0,5) == "video"){
 					
+					?>					
+						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+					<?php
+					}
+					else
+					{
+					?>					
+						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+					<?php
+					}					
+					?>					
+					</a>
+					</td>
 					<br>
 					</tr>
 				<?php
@@ -222,7 +275,24 @@ if($userlogin){
 					<td>
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+					<?php
+					if (substr($result_row['type'],0,5) == "video"){
 					
+					?>					
+						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+					<?php
+					}
+					else
+					{
+					?>					
+						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+					<?php
+					}					
+					?>					
+					</a>
+					</td>
 					<br>
 					</tr>
 				<?php
@@ -300,7 +370,13 @@ if($userlogin){
 					<td>
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
-					
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+										
+						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+								
+					</a>
+					</td>
 					<br>
 					</tr>
 				<?php
@@ -328,7 +404,13 @@ if($userlogin){
 					<td>
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
-					
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+										
+						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+								
+					</a>
+					</td>
 					<br>
 					</tr>
 				<?php
@@ -372,7 +454,13 @@ if($userlogin){
 					<td>
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
-					
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+										
+						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+										
+					</a>
+					</td>
 					<br>
 					</tr>
 				<?php
@@ -400,7 +488,13 @@ if($userlogin){
 					<td>
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
-					
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+										
+						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+										
+					</a>
+					</td>
 					<br>
 					</tr>
 				<?php
@@ -441,7 +535,13 @@ if($userlogin){
 					<td>
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
-					
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+										
+						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+										
+					</a>
+					</td>
 					<br>
 					</tr>
 				<?php
@@ -469,7 +569,13 @@ if($userlogin){
 					<td>
 					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 					</td>
-					
+					<td>
+					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+										
+						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+										
+					</a>
+					</td>
 					<br>
 					</tr>
 				<?php
