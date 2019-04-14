@@ -16,7 +16,7 @@
             <div class="topbar-developer">
                 <a href="">MeTube by Ying Cai & Yining Qiu</a> 
             </div>
-            <div class="topbar-message"><a href=""> <i class="iconfont">&#xe625;</i><span> (0) </span></a></div>
+            
 			
             <div class="topbar-info clearfloat">
 <?php
@@ -32,7 +32,8 @@
 		$result = user_randomstring_check($userid, $randomstring);
 		if($result == 0){
 			$userlogin = TRUE;
-			echo "Welcome ".$username."<span> | </span><a href=\"userprofile.php?uid=".$userid."\">Account</a><span> | </span><a href=\"logout.php\">Log Out</a><span> | </span>";
+			echo "Welcome ".$username."<span> | </span><a href=\"userprofile.php?uid=".$userid."\">Account</a><span> | </span>
+			<a href=\"logout.php\">Log Out</a><span> | </span><div class=\"topbar-message\"><a href=\"message.php\"> <i class=\"iconfont\">&#xe625;</i><span> (0) </span></a></div>";
 		}
 		else
 			echo "<a href=\"login.php\">Sign In</a><span> | </span><a href=\"register.php\">Sign Up</a><span> | </span>";
@@ -83,10 +84,11 @@
                 </div>
 				
                 <div class="header-search">
-                    <form action="search.php?key=$keyword" class="search-form">
+                    <form action="search.php" class="search-form">
                         <input type="search" name="keyword" class="search-text">
                         <input type="submit" name="search_submit" value="&#xe71f;" class="search-button iconfont" >
                     </form>
+					
                 </div>
             </div>
         </div>
@@ -109,43 +111,42 @@ if($userlogin){
 		
 ?>
 		
-			<div class="recently view">
+			<div class="movie">
                 <p class="recommend clearfloat">Recently Views</p>
                 <ul class="clearfloat">
 				<?php
 				while ($result_row = mysql_fetch_assoc($r))
 				{ 
 					$mname=$result_row['medianame'];
-				?>			
-                    <tr>			
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+				?>
+					<li class="view">					
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 					<?php
 					if (substr($result_row['type'],0,5) == "video"){
 					
 					?>					
-						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+							<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
 					<?php
 					}
 					elseif(substr($result_row['type'],0,5) == "image"){
 					?>
-					<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
+							<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
 					<?php						
 					}
 					else
 					{
 					?>					
-						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+							<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
 					<?php
 					}					
 					?>					
-					</a>
-					</td>
-					<br>
-					</tr>
+							</a>
+						</div>
+						<div class="bg">
+						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
+					</li>
 				<?php
 				}
 				?>
@@ -166,7 +167,7 @@ if($userlogin){
 		
 		
 		?>
-			<div class="recently upload">
+			<div class="movie">
                 <p class="recommend clearfloat">Recently Public Uploads</p>
                 <ul class="clearfloat">
 				<?php
@@ -174,37 +175,33 @@ if($userlogin){
 				{ 
 					$mname=$result_row['medianame'];
 				?>			
-                    <tr>			
-					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+					<li>				
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 					<?php
 					if (substr($result_row['type'],0,5) == "video"){
 					
 					?>					
-						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+							<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
 					<?php
 					}
 					elseif(substr($result_row['type'],0,5) == "image"){
 					?>
-					<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
+							<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
 					<?php						
 					}else
 					{
 					?>					
-						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+							<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
 					<?php
 					}					
 					?>					
-					</a>
-					</td>
-					
-					<br>
-					</tr>
+							</a>
+						</div>
+						<div class="bg">
+						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
+					</li>
 				<?php
 				}
 				?>
@@ -220,7 +217,7 @@ if($userlogin){
 		$r=mysql_query($q) or die ("Could not query the database groupmember: <br />". mysql_error());		
 		
 		?>
-			<div class="recently upload">
+			<div class="movie">
                 <p class="recommend clearfloat">Recently Group-member Uploads</p>
                 <ul class="clearfloat">
 				<?php
@@ -228,13 +225,9 @@ if($userlogin){
 				{ 
 					$mname=$result_row['medianame'];
 				?>			
-                    <tr>			
-					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+                    <li>					
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 					<?php
 					if (substr($result_row['type'],0,5) == "video"){
 					
@@ -254,16 +247,18 @@ if($userlogin){
 					<?php
 					}					
 					?>					
-					</a>
-					</td>
-					<br>
-					</tr>
+							</a>
+						</div>
+						<div class="bg">
+						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
+					</li>
 				<?php
 				}
 		}
 				?>
                 </ul>
-            </div>
+            
 			
 			<?php	//most views
 		$q="select * from media where permission='public' order by views desc limit 8";
@@ -276,7 +271,9 @@ if($userlogin){
 		
 		
 		?>
-			<div class="recently upload">
+		
+		
+			<div class="movie">
                 <p class="recommend clearfloat">Most Views</p>
                 <ul class="clearfloat">
 				<?php
@@ -284,49 +281,55 @@ if($userlogin){
 				{ 
 					$mname=$result_row['medianame'];
 				?>			
-                    <tr>			
+                    <li>
+						
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 					<?php
 					if (substr($result_row['type'],0,5) == "video"){
 					
-					?>					
-						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+					?>		
+							<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >	
+																
 					<?php
 					}
 					elseif(substr($result_row['type'],0,5) == "image"){
 					?>
-					<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
+							<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
 					<?php						
 					}
 					else
 					{
 					?>					
-						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
+							<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
 					<?php
 					}					
 					?>					
-					</a>
-					</td>
-					<br>
-					</tr>
+							</a>
+						</div>
+						<div class="bg">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
+					
+					</li>
 				<?php
 				}
 				?>
                 </ul>
             </div>
 		
-            <div class="movies">
+		 
+            <div class="movie">
                 <p class="recommend clearfloat">Recommend</p>
                 <ul class="clearfloat">
                     <li>
-                        <div class="bg"><img src="img/division2.jpg" alt=""></div>
+						<div class="bg">
+							<a href="vedio.php?mid=5" target="_blank" class= "name"><img width="200" src="uploads/thumbs/5.jpg" alt="<?php echo "sample 3";?>" >
+							</a>
+						</div>
                         <div class="intro">
-                            <a href="" class="name">THE DIVISION 2 Walkthrough Gameplay Part 1 - INTRO - Campaign Mission 1 (PS4 Pro)</a>
+							<a href="vedio.php?mid=5" target="_blank" class= "name"><?php echo "sample 3";?></a> 
                         </div>
                     </li>
 
@@ -353,10 +356,10 @@ if($userlogin){
                 </ul>
             </div>
           
-        </div>
+        
 
-        <div class="container">
-			<div class="vedio">
+        
+			<div class="movie">
                 <p class="recommend clearfloat">Vedio</p>
                 <ul class="clearfloat">
 				<?php 
@@ -384,23 +387,24 @@ if($userlogin){
 				{ 
 					$mname=$result_row['medianame'];
 				?>			
-                    <tr>			
+                    <li>			
 					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 										
-						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+							<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
 								
-					</a>
-					</td>
-					<br>
-					</tr>
+							</a>
+						</div>
+						<div class="bg">
+						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
+					</li>
+					
 				<?php
 				}
 				?>
+				
 				
 		<?php	
 		if ($userlogin){
@@ -418,20 +422,17 @@ if($userlogin){
 				{ 
 					$mname=$result_row['medianame'];
 				?>			
-                    <tr>			
+                    <li>
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">										
+							<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
+							</a>
+						</div>
+						<div class="bg">
+						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
 					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
-										
-						<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
-								
-					</a>
-					</td>
-					<br>
-					</tr>
+					</li>
 				<?php
 				}
 		}
@@ -440,7 +441,7 @@ if($userlogin){
                 </ul>
             </div>
            
-            <div class="vedio">
+            <div class="movie">
                 <p class="recommend clearfloat">Audio</p>
                 <ul class="clearfloat">
 				<?php 
@@ -468,20 +469,17 @@ if($userlogin){
 				{ 
 					$mname=$result_row['medianame'];
 				?>			
-                    <tr>			
-					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+					<li>
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">			
+							<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
 										
-						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
-										
-					</a>
-					</td>
-					<br>
-					</tr>
+							</a>
+						</div>
+						<div class="bg">
+						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
+					</li>
 				<?php
 				}
 				?>
@@ -502,20 +500,19 @@ if($userlogin){
 				{ 
 					$mname=$result_row['medianame'];
 				?>			
-                    <tr>			
-					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+                    <li>
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">										
+							<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
 										
-						<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
-										
-					</a>
-					</td>
-					<br>
-					</tr>
+							</a>
+						</div>
+						<div class="bg">
+						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
+		
+					</li>
+	
 				<?php
 				}
 		}
@@ -523,9 +520,9 @@ if($userlogin){
 				
                 </ul>
             </div>
-        </div>
+        
 		
-		<div class="image">
+			<div class="movie">
                 <p class="recommend clearfloat">Image</p>
                 <ul class="clearfloat">
 				<?php 
@@ -541,30 +538,24 @@ if($userlogin){
 		
 		$r=mysql_query($q) or die ("Could not query the database view: <br />". mysql_error());		
 		
-		?>
-				
-				
+		?>		
 				<?php
 				while ($result_row = mysql_fetch_assoc($r))
 				{ 
 					$mname=$result_row['medianame'];
 				?>			
-                    <tr>			
+                    <li>
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+							<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
+							</a>
+						</div>
+						<div class="bg">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
+					</li>
 					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
-
-					<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
-										
-						
-										
-					</a>
-					</td>
-					<br>
-					</tr>
+				
 				<?php
 				}
 				?>
@@ -585,29 +576,26 @@ if($userlogin){
 				{ 
 					$mname=$result_row['medianame'];
 				?>			
-                    <tr>			
-					
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-					</td>
-					<td>
-					<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">										
-					<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">				
-										
-					</a>
-					</td>
-					<br>
-					</tr>
+                    <li>
+						<div class="intro">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
+							<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
+							</a>
+						</div>
+						<div class="bg">
+							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						</div>
+					</li>
 				<?php
 				}
 		}
 				?>
 				
                 </ul>
-            </div>
-
-    </div>
-   </div>
+        </div>
+	</div>
+    
+</div>
    
 
 </body>

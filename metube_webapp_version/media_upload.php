@@ -7,15 +7,11 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 	$username=$_SESSION['username'];
 	$userid=$_SESSION['userid'];
 	$randomstring=$_SESSION['randomstring'];
-
-	$checkuser=user_randomstring_check($userid, $randomstring);
-	if($checkuser!=0){
-		header('Location:require_login.php');
-	}
-
-	$current=time();
+	
 	$start=$_SESSION['start'];
-	if ($current - $start > 30*60){		//more than 30 mins
+	
+	$loginrequired=requirelogin($userid, $randomstring, $start);
+	if($loginrequired!=0){
 		header('Location:require_login.php');
 	}
 	

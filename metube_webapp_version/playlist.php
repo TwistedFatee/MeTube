@@ -67,9 +67,6 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring']) && isset($_GET
 
 </body>
 </html>
-
-
-
 		
 <?php
 

@@ -94,7 +94,7 @@ function requirelogin($userid, $randomstring, $start){
 	if($checkuser==0){
 		$current=time();
 	
-		if ($current - $start <= 30*60){		//more than 30 mins
+		if ($current - $start <= 30*60){		//less than 30 mins
 			return 0;
 		}
 		else 

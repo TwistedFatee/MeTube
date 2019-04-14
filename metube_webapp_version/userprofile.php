@@ -13,6 +13,8 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 	$start=$_SESSION['start'];
 	
 	$loginrequired=requirelogin($userid, $randomstring, $start);
+
+	//$checkuser=user_randomstring_check($userid, $randomstring);
 	if($loginrequired!=0){
 		header('Location:require_login.php');
 	}

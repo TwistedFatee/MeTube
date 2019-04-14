@@ -230,7 +230,7 @@ a{
     background-color: #f5f5f5;
 }
 
-.movies{
+.movie{
     display: inline-block;
 }
 
@@ -242,12 +242,12 @@ a{
     color: #868686;
 }
 
-.movies ul{
+.movie ul{
     /* border: 1px solid black; */
     margin-right: -13px;
 }
 
-.movies li{
+.movie li{
     float: left;
     height: 180.5px;
     width: 210px;
@@ -257,27 +257,34 @@ a{
     margin-bottom: 13px;
 }
 
-.movies .bg{
+.movie .bg{
     width: 210px;
     height: 118.5px;
     /* border: 1px solid black; */
 }
 
-.movies .bg img{
+.movie .bg img{
     height: 118.5px;
     width: 210px;
 }
 
-.movies .intro{
+.movie .intro{
     width: 210px;
     height: 63px;
     text-align: justify;
     /* border: 1px solid red; */
 }
 
-.movies .intro .name{
+.movie .intro .name{
     font-size: 15px;
     color: #333;
     height: 63px; 
 }
 
+.clearfloat {
+    width: 1000px;
+}
+
+.view {
+    display: inline-block;
+}
