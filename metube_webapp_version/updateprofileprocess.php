@@ -36,7 +36,7 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 	$r = mysql_query($q) or die("Cannot query account.".mysql_error());
 	$url='userprofile.php?uid='.$userid;
 			
-			header("Location: ".$url);
+	header("Location: ".$url);
 	
 }
 else

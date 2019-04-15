@@ -74,20 +74,20 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
             <div id = "left-content" class = "left-content">
                 <div id = "user-infor-box" class = "user-infor-box">
 					<div class = "item">
-                        <label>User ID: <?php echo $userid;?></label>
-                        <span class = "permanent" id = "userid"></span>
+                        <p>User ID: <?php echo $userid;?></p>
+                        <span></span>
                     </div>
                     <div class = "item">
-                        <label>User Name: <?php echo $username;?></label>
-                        <span class = "permanent" id = "username"></span>
+                        <p>User Name: <?php echo $username;?></p>
+                        <span></span>
                     </div>
                     <div class = "item">
-                        <label>Email: <?php echo $email;?></label>
-                        <span class = "permanent" id = "useremail"></span>
+                        <p>Email: <?php echo $email;?></p>
+                        <span></span>
                     </div>
         
                     <div class = "item">
-                        <label>Phone: <?php echo $phone;?></label>
+                        <p>Phone: <?php echo $phone;?></p>
                         <span class = "permanent" id = "userphone"></span>
                     </div>
 					
@@ -108,7 +108,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
                     <br>
 					<a href="downloadlist.php">Download History</a>
                     <br>
-                    <a href="favorite.php">Liked</a>
+                    <a href="favoritelist.php">Liked</a>
                     
 					<br>
                     <a href="userplaylist.php">Play Lists</a>

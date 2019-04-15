@@ -1,3 +1,4 @@
+   
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -49,7 +50,6 @@ include_once "function.php";
 	
 <?php
 	}
-
 	$ip=$_SERVER['REMOTE_ADDR'];
 	
 if(isset($_GET['mid'])) {
@@ -87,7 +87,7 @@ if(isset($_GET['mid'])) {
 		echo "Viewing Audio:";
 		echo $result_row['medianame'];
 		echo "<br>";
-		echo "<audio controls autoplay><source src='".$filepath.$filename."' type='".$result_row['type']."'>";
+		echo "<audio controls autoplay><source src='".$filepath.$filename."' type='".$type."'>";
 		echo "</audio>";
 		
 		
@@ -121,8 +121,17 @@ else
 <div class="tool-bar">
         <div class="ops">
 			<p class="comment-content-footer">   
-                        <span class="comment-content-footer-timestamp">Uploaded by: <?php echo $uploadname;?></span>
-						<a href="subscribe.php?uid=<?php echo $uploadid;?>">Subscribe</a>
+                <span class="comment-content-footer-timestamp">Uploaded by: <?php echo $uploadname;?></span>
+				&nbsp;&nbsp;&nbsp;
+				<a href="subscribe.php?uid=<?php echo $uploadid;?>">Subscribe</a>
+				&nbsp;&nbsp;&nbsp;
+				<a href="addfriend.php?uid=<?php echo $uploadid;?>">Add to friend list</a>
+				&nbsp;&nbsp;&nbsp;
+				<a href="addcontact.php?uid=<?php echo $uploadid;?>">Add to contact list</a>
+				&nbsp;&nbsp;&nbsp;
+				<a href="sendmessage.php?uid=<?php echo $uploadid;?>">Send a message</a>
+				&nbsp;&nbsp;&nbsp;
+				<a href="invitetogroup.php?uid=<?php echo $uploadid;?>">Invite to join a group</a>
             </p>
 		
             <span title="like" class="like"><i class="iconfont" style="color: grey; font-weight: bold;">&#xe60c;</i>
@@ -134,7 +143,7 @@ else
             
             <span title="share" class="share">
             <i class="iconfont" style= "color: grey; font-weight: bold;" >&#xe632;</i>
-            <a href="share.php?mid=<?php echo $result_row['mediaid'];?>">Share</a>
+            <a href="share.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">Share</a>
             </span>
             
             <canvas width="34" height="34" class="ring-progress" style="width:34px;height:34px;left:-3px;top:-3px;">
@@ -179,16 +188,10 @@ else
 <?php
 $q="select * from comment where mediaid='$mediaid' order by createtime desc";
 $r=mysql_query($q);
-
 if(!$r){
 	die("Cannot query comments from table comment.<br>".mysql_error());
 }
-
-
-
-
 	
-
 ?>
             
 <?php
@@ -201,7 +204,6 @@ if(!$r){
 		$commentuser=$commentuser[0];
 		$time=$result['createtime'];
 		$commentcontent=$result['comment'];
-
 ?>
 			<div class="comment">
                 <span class="comment-avatar">
@@ -218,7 +220,6 @@ if(!$r){
             </div>
 <?php
 	}
-
 ?>
                 
             
@@ -228,3 +229,4 @@ if(!$r){
 
 </body>
 </html>
+

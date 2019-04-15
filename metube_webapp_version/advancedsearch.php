@@ -38,7 +38,7 @@ Min&nbsp;<input type='int' name='minsize' size='10'>&nbsp;&nbsp;Max&nbsp;<input 
 
 <p>
 Uploaded time<br>
-Before&nbsp;<input type='date' name='beforetime'>&nbsp;&nbsp;After&nbsp;<input type='date' name='aftertime'><br>
+Before&nbsp;<input type="date" name='beforetime'>&nbsp;&nbsp;After&nbsp;<input type="date" name='aftertime'><br>
 </p>
 
 <p>
@@ -74,7 +74,7 @@ Permission<br>
 	}
 }
 ?>
-<input type='submit' name='advancedsearchsubmit'>
+<input type='submit' name='advancedsearchsubmit' value="Submit">
 </form>
 </body>
 </html>

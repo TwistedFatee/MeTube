@@ -21,6 +21,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 }
 	
 	$key = mysql_escape_string($_REQUEST['keyword']);
+	searchwordcloud($key);
 	$q="select * from media where (permission='public') and  
 		(medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%')";
 	if($userlogin){
@@ -32,23 +33,17 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 	
 	$key_array=explode(" ", $key);
 	$numofkeywords=count($key_array);
+	if ($numofkeywords > 1){
 	
-	$key=$key_array[0];
-	$q="select * from media where (permission='public') and  
-		(medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%')";
-	if($userlogin){
-		$q .= " UNION select * from media where (permission='grouponly') and  
-		(medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%') 
-		and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$userid'))";
-	}
-	for($i=1; $i<$numofkeywords; $i++){
-		$key=$key_array[$i];
-		//echo $key;
-		$q.="UNION select * from media where (permission='public') and  (medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%') ";
-		if($userlogin){
-			$q .= " UNION select * from media where (permission='grouponly') and  
-			(medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%') 
-			and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$userid'))";
+		for($i=0; $i<$numofkeywords; $i++){
+			$key=$key_array[$i];
+			searchwordcloud($key);
+			$q.="UNION select * from media where (permission='public') and  (medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%') ";
+			if($userlogin){
+				$q .= " UNION select * from media where (permission='grouponly') and  
+				(medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%') 
+				and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$userid'))";
+			}
 		}
 	}
 	$q.=" order by views desc";

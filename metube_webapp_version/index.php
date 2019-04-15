@@ -13,12 +13,18 @@
    <div class = "allDiv">
     <div class="topbar">
         <div class="container">
-            <div class="topbar-developer">
+            <div class="topbar-developer" >
                 <a href="">MeTube by Ying Cai & Yining Qiu</a> 
             </div>
+			<div class="topbar-developer" >
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				
+            </div>
+			
             
 			
-            <div class="topbar-info clearfloat">
+            <div class="topbar-developer" align="right">
 <?php
 	ini_set('session.save_path','/home/cai7/temp');
 	session_start();	
@@ -32,15 +38,16 @@
 		$result = user_randomstring_check($userid, $randomstring);
 		if($result == 0){
 			$userlogin = TRUE;
-			echo "Welcome ".$username."<span> | </span><a href=\"userprofile.php?uid=".$userid."\">Account</a><span> | </span>
-			<a href=\"logout.php\">Log Out</a><span> | </span><div class=\"topbar-message\"><a href=\"message.php\"> <i class=\"iconfont\">&#xe625;</i><span> (0) </span></a></div>";
+			echo "<font color=\"red\" size=\"4\">Welcome ".$username."</font><span> | </span><a href=\"userprofile.php?uid=".$userid."\"><font color=\"red\">Account</font></a><span> | </span>
+			<a href=\"logout.php\"><font color=\"red\">Log Out</font></a><span> | </span><div class=\"topbar-message\"><a href=\"message.php\"> <i class=\"iconfont\">&#xe625;</i><span> (0) </span></a></div>";
 		}
 		else
-			echo "<a href=\"login.php\">Sign In</a><span> | </span><a href=\"register.php\">Sign Up</a><span> | </span>";
+			echo "<a href=\"login.php\"><font color=\"red\">Sign In</font></a><span> | </span><a href=\"register.php\"><font color=\"red\">Sign Up</font></a><span> | </span>";
 				
 	}
 	else
-		echo "<a href=\"login.php\">Sign In</a><span> | </span><a href=\"register.php\">Sign Up</a><span> | </span>";
+		echo "<a href=\"login.php\"><font color=\"red\">Sign In</font></a><span> | </span><a href=\"register.php\"><font color=\"red\">Sign Up</font></a><span> | </span>";
+			
 	
 ?>   
             </div>
@@ -60,7 +67,10 @@
                 <div class="header-category">
                     <ul class="category-list clearfloat" id="tabs">
                         <li class="item">
-                            <a href="category.php?category='sports'">Sports</a>
+                            <a href="category.php?category=sport">Sports</a>
+                        </li>
+						<li class="item">
+                            <a href="category.php?category=music">Music</a>
                         </li>
                         <li class="item">
                             <a href="category.php?category=movie">Movie</a>
@@ -78,7 +88,7 @@
                             <a href="category.php?category=game">Games</a>
                         </li>
                         <li class="item">
-                            <a href="category.php?category=documentary">Documentary</a>
+                            <a href="category.php?category=othertype">Other</a>
                         </li>
                     </ul>
                 </div>
@@ -87,6 +97,7 @@
                     <form action="search.php" class="search-form">
                         <input type="search" name="keyword" class="search-text">
                         <input type="submit" name="search_submit" value="&#xe71f;" class="search-button iconfont" >
+						<a href="advancedsearch.php">Advanced Search</a>
                     </form>
 					
                 </div>
@@ -120,7 +131,7 @@ if($userlogin){
 					$mname=$result_row['medianame'];
 				?>
 					<li class="view">					
-						<div class="intro">
+						<div class="bg">
 							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 					<?php
 					if (substr($result_row['type'],0,5) == "video"){
@@ -143,8 +154,8 @@ if($userlogin){
 					?>					
 							</a>
 						</div>
-						<div class="bg">
-						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						<div class="intro">
+						<a class="name" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 						</div>
 					</li>
 				<?php
@@ -176,7 +187,7 @@ if($userlogin){
 					$mname=$result_row['medianame'];
 				?>			
 					<li>				
-						<div class="intro">
+						<div class="bg">
 							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 					<?php
 					if (substr($result_row['type'],0,5) == "video"){
@@ -198,8 +209,8 @@ if($userlogin){
 					?>					
 							</a>
 						</div>
-						<div class="bg">
-						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						<div class="intro">
+						<a class="name" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 						</div>
 					</li>
 				<?php
@@ -226,7 +237,7 @@ if($userlogin){
 					$mname=$result_row['medianame'];
 				?>			
                     <li>					
-						<div class="intro">
+						<div class="bg">
 							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 					<?php
 					if (substr($result_row['type'],0,5) == "video"){
@@ -249,8 +260,8 @@ if($userlogin){
 					?>					
 							</a>
 						</div>
-						<div class="bg">
-						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						<div class="intro">
+						<a class="name" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 						</div>
 					</li>
 				<?php
@@ -283,7 +294,7 @@ if($userlogin){
 				?>			
                     <li>
 						
-						<div class="intro">
+						<div class="bg">
 							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 					
 					<?php
@@ -308,8 +319,8 @@ if($userlogin){
 					?>					
 							</a>
 						</div>
-						<div class="bg">
-							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						<div class="intro">
+							<a class="name" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 						</div>
 					
 					</li>
@@ -362,17 +373,13 @@ if($userlogin){
 			<div class="movie">
                 <p class="recommend clearfloat">Vedio</p>
                 <ul class="clearfloat">
-				<?php 
-				if($userlogin){
-					?>
-					<p>Public</p>
-				<?php 
-				}
-				?>
 		<?php	//vedios
-		$q="select * from media where permission='public' and type like 'video%' order by uploadtime desc limit 4";
-		
-		
+		$q="select * from media where permission='public' and type like 'video%' ";
+		if ($userlogin){
+		//recently uploaded vedio group-only 	
+			$q.=" UNION select * from media where type like 'video%' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid')) ";
+		}
+		$q.=" order by views limit 8";
 		$r=mysql_query($q);
 		if(!$r){
 			 die ("Could not query the database view: <br />". mysql_error());
@@ -389,54 +396,22 @@ if($userlogin){
 				?>			
                     <li>			
 					
-						<div class="intro">
+						<div class="bg">
 							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 										
 							<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
 								
 							</a>
 						</div>
-						<div class="bg">
-						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-						</div>
-					</li>
-					
-				<?php
-				}
-				?>
-				
-				
-		<?php	
-		if ($userlogin){
-		//recently uploaded vedio group-only 	
-		$q="select * from media where type like 'video%' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid'))
-		 order by uploadtime desc limit 4";
-		
-		
-		$r=mysql_query($q) or die ("Could not query the database groupmember: <br />". mysql_error());		
-		
-		?>	
-				<p>Group</p>
-				<?php
-				while ($result_row = mysql_fetch_assoc($r))
-				{ 
-					$mname=$result_row['medianame'];
-				?>			
-                    <li>
 						<div class="intro">
-							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">										
-							<img width="200" src="uploads/thumbs/<?php echo $result_row['mediaid'];?>.jpg" alt="<?php echo $result_row['medianame'];?>" >											
-							</a>
+						<a class="name" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 						</div>
-						<div class="bg">
-						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-						</div>
-					
 					</li>
+					
 				<?php
 				}
-		}
 				?>
+				
 				
                 </ul>
             </div>
@@ -444,16 +419,13 @@ if($userlogin){
             <div class="movie">
                 <p class="recommend clearfloat">Audio</p>
                 <ul class="clearfloat">
-				<?php 
-				if($userlogin){
-					?>
-					<p>Public</p>
-				<?php 
-				}
-				?>
 		<?php	//audios
-		$q="select * from media where permission='public' and type like 'audio%' order by uploadtime desc limit 4";
-		
+		$q="select * from media where permission='public' and type like 'audio%' ";
+		if ($userlogin){
+		//recently uploaded vedio group-only 	
+			$q.=" UNION select * from media where type like 'audio%' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid')) ";
+		}
+		$q.=" order by views limit 8";
 		
 		$r=mysql_query($q);
 		if(!$r){
@@ -470,54 +442,19 @@ if($userlogin){
 					$mname=$result_row['medianame'];
 				?>			
 					<li>
-						<div class="intro">
+						<div class="bg">
 							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">			
 							<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
 										
 							</a>
 						</div>
-						<div class="bg">
-						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-						</div>
-					</li>
-				<?php
-				}
-				?>
-				
-		<?php	
-		if ($userlogin){
-		//group audios	
-		$q="select * from media where type like 'audio%' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid'))
-		 order by uploadtime desc limit 4";
-		
-		
-		$r=mysql_query($q) or die ("Could not query the database groupmember: <br />". mysql_error());		
-		
-		?>
-				<p>Group</p>
-				<?php
-				while ($result_row = mysql_fetch_assoc($r))
-				{ 
-					$mname=$result_row['medianame'];
-				?>			
-                    <li>
 						<div class="intro">
-							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">										
-							<img src="img/logo.png" alt="<?php echo $result_row['medianame'];?>" width="200">					
-										
-							</a>
+						<a class="name" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 						</div>
-						<div class="bg">
-						<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-						</div>
-		
 					</li>
-	
 				<?php
 				}
-		}
-				?>
-				
+				?>				
                 </ul>
             </div>
         
@@ -525,16 +462,13 @@ if($userlogin){
 			<div class="movie">
                 <p class="recommend clearfloat">Image</p>
                 <ul class="clearfloat">
-				<?php 
-				if($userlogin){
-					?>
-					<p>Public</p>
-				<?php 
-				}
-				?>
 		<?php	//public image
-		$q="select * from media where permission='public' and type like 'image%' order by uploadtime desc limit 4";
-		
+		$q="select * from media where permission='public' and type like 'image%' ";
+		if ($userlogin){
+		//recently uploaded vedio group-only 	
+			$q.=" UNION select * from media where type like 'image%' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid')) ";
+		}
+		$q.=" order by views limit 8";
 		
 		$r=mysql_query($q) or die ("Could not query the database view: <br />". mysql_error());		
 		
@@ -545,13 +479,13 @@ if($userlogin){
 					$mname=$result_row['medianame'];
 				?>			
                     <li>
-						<div class="intro">
+						<div class="bg">
 							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
 							<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
 							</a>
 						</div>
-						<div class="bg">
-							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
+						<div class="intro">
+							<a class="name" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
 						</div>
 					</li>
 					
@@ -559,38 +493,6 @@ if($userlogin){
 				<?php
 				}
 				?>
-				
-		<?php	
-		if ($userlogin){
-		//group images
-		$q="select * from media where type like 'image%' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid'))
-		 order by uploadtime desc limit 4";
-		
-		
-		$r=mysql_query($q) or die ("Could not query the database groupmember: <br />". mysql_error());		
-		
-		?>
-				<p>Group</p>
-				<?php
-				while ($result_row = mysql_fetch_assoc($r))
-				{ 
-					$mname=$result_row['medianame'];
-				?>			
-                    <li>
-						<div class="intro">
-							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">
-							<img src="<?php echo $result_row['filepath'].$result_row['filename'];?>" alt="<?php echo $result_row['medianame'];?>" width="200">
-							</a>
-						</div>
-						<div class="bg">
-							<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $mname;?></a> 
-						</div>
-					</li>
-				<?php
-				}
-		}
-				?>
-				
                 </ul>
         </div>
 	</div>

@@ -64,8 +64,13 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 						$tag1=mysql_escape_string($_POST['tag1']);
 						$tag2=mysql_escape_string($_POST['tag2']);
 						$tag3=mysql_escape_string($_POST['tag3']);
-						$category=$_POST['category'];
-						$permission=$_POST['private'];
+						
+						tagwordcloud($tag1);
+						tagwordcloud($tag2);
+						tagwordcloud($tag3);
+						
+						$category=mysql_escape_string($_POST['category']);
+						$permission=mysql_escape_string($_POST['private']);
 						$size=$_FILES["file"]["size"];
 						
 						$insert = "insert into media(filename,filepath,type,userid,medianame,description,tag1,tag2,tag3,permission,size,category) "
@@ -96,7 +101,8 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 						}
 					}
 				}
-			header('Location:index.php');
+			$url='userprofile.php?uid='.$userid;
+			header('Location:'.$url);
 			}
 			
 		}

@@ -203,7 +203,56 @@ function updateViews($mediaid,$ip, $userid)
 	}
 }
 
+function tagwordcloud($tag){
+	if(strlen($tag) <= 0)
+		return 2;
+	$q="select * from tagwordcloud where tag='".$tag."'";
+	$result=mysql_query($q) or die ("tagwordcloud() failed. Could not query the database tagwordcloud: <br />". mysql_error());
+	$numofresult=mysql_num_rows($result);
+	if ($numofresult == 0){
+		$q = "insert into tagwordcloud(tag) values('$tag')";
+		$result=mysql_query($q) or die ("tagwordcloud() failed. Could not query the database tagwordcloud: <br />". mysql_error());
+		return 0;
+	}else{
+		$result_row=mysql_fetch_row($result);
+		$q = "update tagwordcloud set repeats=repeats+1, lastaccess=NOW() where tagid='".$result_row[0]."'";
+		$result=mysql_query($q) or die ("tagwordcloud() failed. Could not query the database tagwordcloud: <br />". mysql_error());
+		return 0;
+	}
+	
+	return 1;
+}
+
+function searchwordcloud($tag){
+	if(strlen($tag) <= 0)
+		return 2;
+	$q="select * from searchwordcloud where searchkey='".$tag."'";
+	$result=mysql_query($q) or die ("searchwordcloud() failed. Could not query the database searchwordcloud: <br />". mysql_error());
+	$numofresult=mysql_num_rows($result);
+	if ($numofresult == 0){
+		$q = "insert into searchwordcloud(searchkey) values('$tag')";
+		$result=mysql_query($q) or die ("tagwordcloud() failed. Could not query the database searchwordcloud: <br />". mysql_error());
+		return 0;
+	}else{
+		$result_row=mysql_fetch_row($result);
+		$q = "update searchwordcloud set repeats=repeats+1, lastaccess=NOW() where searchid='".$result_row[0]."'";
+		$result=mysql_query($q) or die ("searchwordcloud() failed. Could not query the database searchwordcloud: <br />". mysql_error());
+		return 0;
+	}
+	
+	return 1;
+}
+
 function deleteMedia($mediaid){
+	$q = "select * from media where mediaid='".$mediaid."'";
+	$r = mysql_query($q) or die("deleteMedia() failed. Could not query the database media: <br />". mysql_error());
+	$result = mysql_fetch_assoc($r);
+	$cmd = $result['filepath'].$result['filename'];
+	$remove=unlink($cmd);
+	if (!$remove)
+		return "fail to unlink";
+	
+	
 	$q="delete from download where mediaid='$mediaid'";
 	$result=mysql_query($q);
 	if (!$result)
@@ -238,6 +287,8 @@ function deleteMedia($mediaid){
 	{
 	   die ("deleteMedia() failed. Could not query the database media: <br />". mysql_error());
 	}
+	
+	
 	
 	return 0;
 }

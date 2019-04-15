@@ -40,7 +40,7 @@ else
         </div>
 
         <div class = "top_nav_right">
-			<a href = "userprofile.php" class = "nav_login" id = "profile">Profile</a>
+			<a href = "userprofile.php?uid=<?php echo $userid;?>" class = "nav_login" id = "profile">Profile</a>
             <a href = "logout.php" class = "nav_login" id = "Login">Log Out</a>
         </div>
     </div>
