@@ -19,13 +19,13 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 		header('Location:require_login.php');
 	}
 	
-	
+	$targetid=$_REQUEST['targetid'];
 ?>
 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Download List</title>
+    <title>Channel</title>
     <link rel="icon" href="img/logo.png" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="css/PersonalPage.css">
     <link rel="stylesheet" type="text/css" href="css/DropDownStyle.css">
@@ -59,9 +59,13 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
     </div>
 
 <?php
+	$q="select * from channel where userid = '$targetid'";
+	$r=mysql_query($q) or die ("Could not query the database channel: <br />". mysql_error());
+	$result=mysql_fetch_assoc($r);
+	$channelid=$result['channelid'];
 	
-	$q="select * from media inner join download on media.mediaid = download.mediaid where download.userid='$userid' order by downloadtime desc";
-	$r=mysql_query($q) or die ("Could not query the database media or download: <br />". mysql_error());
+	$q="select * from media inner join channelmedia on media.mediaid=channelmedia.mediaid where channelid='$channelid' order by addtime desc";
+	$r=mysql_query($q) or die ("Could not query the database media: <br />". mysql_error());
 	
 	
 		
@@ -81,8 +85,9 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 					<div class = "item">
                         <p><a target="_blank" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>">Media Name: <?php echo $result_row['medianame'];?></a> 
 						</p>
-						<p>Download Time: <?php echo $result_row['downloadtime'];?></p>
+						<p><?php echo $result_row['uploadtime'];?>&nbsp;&nbsp;Views: <?php echo $result_row['views'];?>&nbsp;&nbsp;
 						
+						</p>
                     </div>
 <?php
 	}
@@ -91,7 +96,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 		
 ?>
                     <div class = "item">                        
-						<p>No Downloaded Media</p>
+						<p>This channel does not contain any media</p>
                     </div>
 <?php
 		
@@ -103,33 +108,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
                 </div>
             </div>
 
-            <div class = "history-record">                
-                <div class="choices">
-					<a href="media_upload.php">Upload File</a>
-                    <br>
-					<a href="uploadlist.php">Upload History</a>
-                    <br>
-					<a href="downloadlist.php">Download History</a>
-                    <br>
-                    <a href="favoritelist.php">Liked</a>
-					<br>
-                    <a href="subscribelist.php">Subscribe List</a>
-					<br>
-                    <a href="userplaylist.php">Play Lists</a>
-					<br>
-					<a href="userpchannel.php">Channel</a>
-					<br>
-					
-                    <a href="contact.php">Contact</a>
-                    <br>
-                    <a href="blocklist.php">Blocking List</a>
-                    <br>
-                    
-                    <a href="group.php">Discussion Group</a>
-                    <br>
-                    <a href="message.php">Message</a>
-                </div>
-            </div>
+            
         </div>
         <div class = "footer">
             <div class = "footer_nav">

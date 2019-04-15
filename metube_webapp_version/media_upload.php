@@ -72,6 +72,8 @@ else
 	<input value="Upload" name="submit" type="submit" />
   </p>
  
+ 
+ </form>
  <p>
  <a href="userprofile.php?uid=<?php echo $userid;?>">Come back to profile</a>
  </p>
@@ -80,7 +82,6 @@ else
 <p>
  <a href="index.php">MeTube</a>
  </p> 
- </form>
 
 </body>
 </html>

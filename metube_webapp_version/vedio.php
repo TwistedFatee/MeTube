@@ -17,7 +17,12 @@
 	
 </head>
 <body>
+
 <figure>
+	<p>
+		<a href="index.php">MeTube</a>
+	</p>
+
     <p>MeTube Video Player</figcaption>
 	
 
@@ -123,15 +128,17 @@ else
 			<p class="comment-content-footer">   
                 <span class="comment-content-footer-timestamp">Uploaded by: <?php echo $uploadname;?></span>
 				&nbsp;&nbsp;&nbsp;
-				<a href="subscribe.php?uid=<?php echo $uploadid;?>">Subscribe</a>
+				<a href="subscribe.php?uid=<?php echo $uploadid;?>&mid=<?php echo $result_row['mediaid'];?>">Subscribe</a>
 				&nbsp;&nbsp;&nbsp;
-				<a href="addfriend.php?uid=<?php echo $uploadid;?>">Add to friend list</a>
+				<a href="addfriend.php?targetid=<?php echo $uploadid;?>&mid=<?php echo $result_row['mediaid'];?>">Add to friend list</a>
 				&nbsp;&nbsp;&nbsp;
-				<a href="addcontact.php?uid=<?php echo $uploadid;?>">Add to contact list</a>
+				<a href="addcontact.php?targetid=<?php echo $uploadid;?>&mid=<?php echo $result_row['mediaid'];?>">Add to contact list</a>
 				&nbsp;&nbsp;&nbsp;
-				<a href="sendmessage.php?uid=<?php echo $uploadid;?>">Send a message</a>
+				<a target="_blank" href="sendmessage.php?targetid=<?php echo $uploadid;?>&mid=<?php echo $result_row['mediaid'];?>">Send a message</a>
 				&nbsp;&nbsp;&nbsp;
-				<a href="invitetogroup.php?uid=<?php echo $uploadid;?>">Invite to join a group</a>
+				<a href="invitetogroup.php?targetid=<?php echo $uploadid;?>&mid=<?php echo $result_row['mediaid'];?>">Invite to join a group</a>
+				&nbsp;&nbsp;&nbsp;
+				<a href="block.php?targetid=<?php echo $uploadid;?>&mid=<?php echo $result_row['mediaid'];?>">Block this user</a>
             </p>
 		
             <span title="like" class="like"><i class="iconfont" style="color: grey; font-weight: bold;">&#xe60c;</i>

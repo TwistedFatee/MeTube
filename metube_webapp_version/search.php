@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <body>
-
+<h1>
+	<a href="index.php">MeTube</a>
+</h1> 
+<br><br>
 <?php
 ini_set('session.save_path','/home/cai7/temp');
 session_start();
@@ -58,7 +61,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 				$username=mysql_fetch_assoc($r2);
 ?>
 
-			<p>
+			<h4>
 			
 			<a href="vedio.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank"><?php echo $result_row['medianame']; echo "&nbsp;&nbsp;Views: ".$result_row['views']; echo "&nbsp;&nbsp;Uploaded by: ".$username['username'];?>
 			</a>
@@ -86,7 +89,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 			?>
 			</a>
 			
-			</p>
+			</h4>
 
 <?php			
 			

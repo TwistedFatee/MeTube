@@ -25,7 +25,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Download List</title>
+    <title>Subscribe List</title>
     <link rel="icon" href="img/logo.png" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="css/PersonalPage.css">
     <link rel="stylesheet" type="text/css" href="css/DropDownStyle.css">
@@ -60,8 +60,8 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 
 <?php
 	
-	$q="select * from media inner join download on media.mediaid = download.mediaid where download.userid='$userid' order by downloadtime desc";
-	$r=mysql_query($q) or die ("Could not query the database media or download: <br />". mysql_error());
+	$q="select * from subscribe where userid='$userid' order by followtime desc";
+	$r=mysql_query($q) or die ("Could not query the database subscribe: <br />". mysql_error());
 	
 	
 		
@@ -76,13 +76,18 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 				
 <?php
 	while($result_row=mysql_fetch_assoc($r)){
-		
+		$targetid=$result_row['targetid'];
+		$q2 = "select * from account where userid='$targetid'";
+		$r2=mysql_query($q2) or die ("Could not query the database account: <br />". mysql_error());
+		$result2=mysql_fetch_assoc($r2);
+		$targetname=$result2['username'];
 ?>
 					<div class = "item">
-                        <p><a target="_blank" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>">Media Name: <?php echo $result_row['medianame'];?></a> 
+                        <p><a target="_blank" href="userprofile.php?uid=<?php echo $targetid;?>">Subscribed User Name: <?php echo $targetname;?></a> 
 						</p>
-						<p>Download Time: <?php echo $result_row['downloadtime'];?></p>
-						
+						<p>Subscribe time: <?php echo $result_row['followtime'];?>
+						<a href="unsubscribe.php?targetid=<?php echo $targetid;?>">Unsubscribe</a>
+						</p>
                     </div>
 <?php
 	}
@@ -91,7 +96,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 		
 ?>
                     <div class = "item">                        
-						<p>No Downloaded Media</p>
+						<p>No Subscribe</p>
                     </div>
 <?php
 		

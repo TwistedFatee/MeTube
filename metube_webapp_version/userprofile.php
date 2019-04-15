@@ -103,28 +103,27 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
             <div class = "history-record">                
                 <div class="choices">
 					<a href="media_upload.php">Upload File</a>
-                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="uploadlist.php">Upload History</a>
                     <br>
 					<a href="downloadlist.php">Download History</a>
                     <br>
-                    <a href="favoritelist.php">Liked</a>
-                    
+                    <a href="favoritelist.php">Liked</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="subscribelist.php">Subscribe List</a>
 					<br>
-                    <a href="userplaylist.php">Play Lists</a>
-					<br>
+                    <a href="userplaylist.php">Play Lists</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="userpchannel.php">Channel</a>
 					<br>
 					
-                    <a href="contact.php">Contact</a>
+                    <a href="contact.php">Contact</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="friendlist.php">Friend</a>
                     <br>
-                    <a href="block.php">Blocking List</a>
+                    <a href="blocklist.php">Blocking List</a>
                     <br>
                     
                     <a href="group.php">Discussion Group</a>
                     <br>
                     <a href="message.php">Message</a>
-					<br>
+					
                 </div>
             </div>
         </div>
@@ -150,36 +149,32 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 		}
 		$result=mysql_fetch_assoc($r);
 		$username=$result['username'];
-		$email=$result['email'];
-		$phone=$result['phone'];
+		
 ?>
 	<div id = "wrapper" class = "wrapper">
         <div id = "content" class = "content">
             <div id = "left-content" class = "left-content">
                 <div id = "user-infor-box" class = "user-infor-box">
 					<div class = "item">
-                        <label>User ID: <?php echo $targetid;?></label>
-                        <span class = "permanent" id = "userid"></span>
-                    </div>
-                    <div class = "item">
-                        <label>User Name: <?php echo $username;?></label>
-                        <span class = "permanent" id = "username"></span>
-                    </div>
-                    <div class = "item">
-                        <label>Email: <?php echo $email;?></label>
-                        <span class = "permanent" id = "useremail"></span>
-                    </div>
-        
-                    <div class = "item">
-                        <label>Phone: <?php echo $phone;?></label>
-                        <span class = "permanent" id = "userphone"></span>
-                    </div>
-					
+                        <p>User ID: <?php echo $userid;?></p>
+                        <span></span>	
+						
+                    </div>                   
 					<div class = "item">
-                        <a href='addfriend.php' >Add to firend list</a></span>
+                        <p>User Name: <?php echo $username;?></p>
+                        <span></span>						
                     </div>
 					<div class = "item">
-                        <a href='block.php' >Block this user</a></span>
+                        <a href='addcontact.php?targetid=<?php echo $targetid;?>' >Add to contact list</a><span></span>
+                    </div>
+					<div class = "item">
+                        <a href='addfriend.php?targetid=<?php echo $targetid;?>' >Add to firend list</a><span></span>
+                    </div>
+					<div class = "item">
+                        <a href='block.php?targetid=<?php echo $targetid;?>' >Block this user</a><span></span>
+                    </div>
+					<div class = "item">
+                        <a href='userprofile.php?uid=<?php echo $userid;?>' >My Homepage</a><span></span>
                     </div>
                 </div>
             </div>
@@ -190,15 +185,11 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
                 </h1>
                 
                 <div class="choices">
-                    <a href="chanal.php">Chanal</a>
+                    <a href="screenchannelmedia.php?targetid=<?php echo $targetid;?>">Chanal media</a>
                     <br>
-                    <a href="userplaylist.php">Play Lists</a>
+                    <a href="screenothermedia.php?targetid=<?php echo $targetid;?>">Other upload files</a>
                     <br>                    
-                    <a href="favorite.php">Liked</a>
-                    <br>
-                    <a href="group.php">Discussion Group</a>
-                    <br>
-                    <a href="message.php">Send a Message</a>
+                    <a href="message.php?targetid=<?php echo $targetid;?>">Send a Message</a>
                 </div>
             </div>
         </div>

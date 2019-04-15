@@ -25,7 +25,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Download List</title>
+    <title>Friend List</title>
     <link rel="icon" href="img/logo.png" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="css/PersonalPage.css">
     <link rel="stylesheet" type="text/css" href="css/DropDownStyle.css">
@@ -57,17 +57,6 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
                 <p style="display: inline-block; font-size: 68px; font-weight: bold; vertical-align: top;">MeTube</p>
             </div>
     </div>
-
-<?php
-	
-	$q="select * from media inner join download on media.mediaid = download.mediaid where download.userid='$userid' order by downloadtime desc";
-	$r=mysql_query($q) or die ("Could not query the database media or download: <br />". mysql_error());
-	
-	
-		
-	
-
-?>
 	
     <div id = "wrapper" class = "wrapper">
         <div id = "content" class = "content">
@@ -75,14 +64,55 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
                 <div id = "user-infor-box" class = "user-infor-box">
 				
 <?php
+	$q="select * from friend where user2='$userid' and approved='0' order by addtime desc";
+	$r=mysql_query($q) or die ("Could not query the database friend: <br />". mysql_error());
+	if (mysql_num_rows($r) > 0){
+?>
+					<div class = "item">
+						<p>Friend Request:</p>
+                    </div>
+<?php
+		while($result_row=mysql_fetch_assoc($r)){
+			$q1="select * from account where userid='".$result_row['user1']."' ";
+			$r1=mysql_query($q1) or die ("Could not query the database account: <br />". mysql_error());
+			$result1=mysql_fetch_assoc($r1);
+			$friendid=$result1['userid'];
+			$friendname=$result1['username'];
+?>
+					<div class = "item">
+                        <p><a href="userprofile.php?uid=<?php echo $friendid;?>">Name: <?php echo $friendname;?></a> 
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="approvefriend.php?targetid=<?php echo $friendid;?>" >Accept</a>
+						<a href="denyfriend.php?targetid=<?php echo $friendid;?>" >Deny</a>
+						</p>
+                    </div>
+<?php
+	
+		}
+	}
+	
+	$q="select * from friend where (user1='$userid' or user2='$userid') and approved='1' order by addtime desc";
+	$r=mysql_query($q) or die ("Could not query the database contact: <br />". mysql_error());
+	
 	while($result_row=mysql_fetch_assoc($r)){
+		if ($result_row['user1'] == $userid)
+			$friendid = $result_row['user2'];
+		else
+			$friendid = $result_row['user1'];
+		
+		$q1 = "select * from account where userid='$friendid'";
+		$r1=mysql_query($q1) or die ("Could not query the database account: <br />". mysql_error());
+		$result1=mysql_fetch_assoc($r1);
+		$targetname=$result1['username'];
 		
 ?>
 					<div class = "item">
-                        <p><a target="_blank" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>">Media Name: <?php echo $result_row['medianame'];?></a> 
+                        <p><a href="userprofile.php?uid=<?php echo $friendid;?>">Name: <?php echo $targetname;?></a> 
 						</p>
-						<p>Download Time: <?php echo $result_row['downloadtime'];?></p>
-						
+						<p>
+						<a href="sendmessage.php?targetid=<?php echo $friendid;?>" >Send a message</a>
+						<a href="removefriend.php?targetid=<?php echo $friendid;?>" >Remove from friend</a>
+						</p>
                     </div>
 <?php
 	}
@@ -91,7 +121,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 		
 ?>
                     <div class = "item">                        
-						<p>No Downloaded Media</p>
+						<p>No Record</p>
                     </div>
 <?php
 		
@@ -106,21 +136,19 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
             <div class = "history-record">                
                 <div class="choices">
 					<a href="media_upload.php">Upload File</a>
-                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="uploadlist.php">Upload History</a>
                     <br>
 					<a href="downloadlist.php">Download History</a>
                     <br>
-                    <a href="favoritelist.php">Liked</a>
-					<br>
+                    <a href="favoritelist.php">Liked</a>&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="subscribelist.php">Subscribe List</a>
 					<br>
-                    <a href="userplaylist.php">Play Lists</a>
-					<br>
+                    <a href="userplaylist.php">Play Lists</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="userpchannel.php">Channel</a>
 					<br>
 					
-                    <a href="contact.php">Contact</a>
+                    <a href="contact.php">Contact</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="friendlist.php">Friend</a>
                     <br>
                     <a href="blocklist.php">Blocking List</a>
                     <br>

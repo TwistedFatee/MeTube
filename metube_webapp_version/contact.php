@@ -25,7 +25,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Download List</title>
+    <title>Contact List</title>
     <link rel="icon" href="img/logo.png" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="css/PersonalPage.css">
     <link rel="stylesheet" type="text/css" href="css/DropDownStyle.css">
@@ -60,8 +60,8 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 
 <?php
 	
-	$q="select * from media inner join download on media.mediaid = download.mediaid where download.userid='$userid' order by downloadtime desc";
-	$r=mysql_query($q) or die ("Could not query the database media or download: <br />". mysql_error());
+	$q="select * from contact where userid='$userid' order by addtime desc";
+	$r=mysql_query($q) or die ("Could not query the database contact: <br />". mysql_error());
 	
 	
 		
@@ -76,13 +76,20 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 				
 <?php
 	while($result_row=mysql_fetch_assoc($r)){
+		$targetid = $result_row['targetid'];
+		$q1 = "select * from account where userid='$targetid'";
+		$r1=mysql_query($q1) or die ("Could not query the database account: <br />". mysql_error());
+		$result1=mysql_fetch_assoc($r1);
+		$targetname=$result1['username'];
 		
 ?>
 					<div class = "item">
-                        <p><a target="_blank" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>">Media Name: <?php echo $result_row['medianame'];?></a> 
+                        <p><a href="userprofile.php?uid=<?php echo $targetid;?>">Name: <?php echo $targetname;?></a> 
 						</p>
-						<p>Download Time: <?php echo $result_row['downloadtime'];?></p>
-						
+						<p>
+						<a href="sendmessage.php?targetid=<?php echo $targetid;?>" >Send a message</a>
+						<a href="removecontact.php?targetid=<?php echo $targetid;?>" >Remove from contact</a>
+						</p>
                     </div>
 <?php
 	}
@@ -91,7 +98,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 		
 ?>
                     <div class = "item">                        
-						<p>No Downloaded Media</p>
+						<p>No Record</p>
                     </div>
 <?php
 		
@@ -106,21 +113,19 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
             <div class = "history-record">                
                 <div class="choices">
 					<a href="media_upload.php">Upload File</a>
-                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="uploadlist.php">Upload History</a>
                     <br>
 					<a href="downloadlist.php">Download History</a>
                     <br>
-                    <a href="favoritelist.php">Liked</a>
-					<br>
+                    <a href="favoritelist.php">Liked</a>&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="subscribelist.php">Subscribe List</a>
 					<br>
-                    <a href="userplaylist.php">Play Lists</a>
-					<br>
+                    <a href="userplaylist.php">Play Lists</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="userpchannel.php">Channel</a>
 					<br>
 					
-                    <a href="contact.php">Contact</a>
+                    <a href="contact.php">Contact</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="friendlist.php">Friend</a>
                     <br>
                     <a href="blocklist.php">Blocking List</a>
                     <br>

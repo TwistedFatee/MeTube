@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h1>
+	<a href="index.php">MeTube</a>
+</h1> 
 
+<br><br>
 <?php
 ini_set('session.save_path','/home/cai7/temp');
 session_start();
@@ -108,9 +112,9 @@ while($result_row=mysql_fetch_assoc($r)){
 	$rr = mysql_fetch_assoc($ru);
 	$username = $rr['username'];
 	
-	echo "<a href='vedio.php?mid=".$result_row['mediaid']."' >".$result_row['medianame']."</a>";
+	echo "<h4><a href='vedio.php?mid=".$result_row['mediaid']."' >".$result_row['medianame']."</a>";
 	echo "&nbsp;&nbsp;&nbsp;&nbsp;Uploaded by: ".$username."&nbsp;&nbsp;&nbsp;&nbsp;".$result_row['uploadtime'];
-	echo "&nbsp;&nbsp;&nbsp;&nbsp;Views: ".$result_row['views']."<br>";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;Views: ".$result_row['views']."</h4><br>";
 	
 }
 

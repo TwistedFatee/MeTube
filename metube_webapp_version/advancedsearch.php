@@ -7,6 +7,10 @@ include_once "function.php";
 
 <html>
 <body>
+<h2>
+	<a href="index.php">MeTube</a>
+</h2> 
+<br><br>
 <form method='post' action='advancedsearchprocess.php'>
 <p>Keyword&nbsp;<input type="text" name="keyword" size="50"></p>
 <p>
@@ -76,5 +80,7 @@ Permission<br>
 ?>
 <input type='submit' name='advancedsearchsubmit' value="Submit">
 </form>
+
+
 </body>
 </html>

@@ -84,7 +84,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
                         <p><a target="_blank" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>">Media Name: <?php echo $result_row['medianame'];?></a>&nbsp;&nbsp; 
 						</p>
 						<p>Liked Time: <?php echo $result_row['addtime'];?>
-						<a href="unlike.php?mid=<?php echo $result_row['mediaid'];?>" target="_blank">Unlike</a></p>
+						<a href="unlike.php?mid=<?php echo $result_row['mediaid'];?>" >Unlike</a></p>
                     </div>
 <?php
 	}
@@ -112,8 +112,9 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
                     <br>
 					<a href="downloadlist.php">Download History</a>
                     <br>
-                    <a href="favorite.php">Liked</a>
-                    
+                    <a href="favoritelist.php">Liked</a>
+					<br>
+                    <a href="subscribelist.php">Subscribe List</a>
 					<br>
                     <a href="userplaylist.php">Play Lists</a>
 					<br>
@@ -122,13 +123,12 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 					
                     <a href="contact.php">Contact</a>
                     <br>
-                    <a href="block.php">Blocking List</a>
+                    <a href="blocklist.php">Blocking List</a>
                     <br>
                     
                     <a href="group.php">Discussion Group</a>
                     <br>
                     <a href="message.php">Message</a>
-					<br>
                 </div>
             </div>
         </div>

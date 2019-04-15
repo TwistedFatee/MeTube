@@ -81,8 +81,10 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 					<div class = "item">
                         <p><a target="_blank" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>">Media Name: <?php echo $result_row['medianame'];?></a> 
 						</p>
-						<p>Upload: <?php echo $result_row['uploadtime'];?>&nbsp;&nbsp;Views: <?php echo $result_row['views'];?>&nbsp;&nbsp;
-						<a href="deletemedia.php?mid=<?php echo $result_row['mediaid'];?>" >Delete</a></p>
+						<p><?php echo $result_row['uploadtime'];?>&nbsp;&nbsp;Views: <?php echo $result_row['views'];?>&nbsp;&nbsp;
+						<a href="deletemedia.php?mid=<?php echo $result_row['mediaid'];?>" >Delete</a>
+						<a href="addmediatochannel.php?mid=<?php echo $result_row['mediaid'];?>" >Add to your channel</a>
+						</p>
                     </div>
 <?php
 	}
@@ -112,22 +114,22 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 					<a href="downloadlist.php">Download History</a>
                     <br>
                     <a href="favoritelist.php">Liked</a>
-                    
+					<br>
+                    <a href="subscribelist.php">Subscribe List</a>
 					<br>
                     <a href="userplaylist.php">Play Lists</a>
 					<br>
 					<a href="userpchannel.php">Channel</a>
 					<br>
 					
-                    <a href="usercontact.php">Contact</a>
+                    <a href="contact.php">Contact</a>
                     <br>
-                    <a href="userblock.php">Blocking List</a>
+                    <a href="blocklist.php">Blocking List</a>
                     <br>
                     
-                    <a href="usergroup.php">Discussion Group</a>
+                    <a href="group.php">Discussion Group</a>
                     <br>
-                    <a href="usermessage.php">Message</a>
-					<br>
+                    <a href="message.php">Message</a>
                 </div>
             </div>
         </div>

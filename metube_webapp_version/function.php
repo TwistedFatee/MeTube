@@ -396,8 +396,186 @@ function removeFavorite($userid, $mediaid){
 	return 0;
 }
 
+function createchannel($uid, $cname, $description){
+	$q="insert into channel(userid, channelname, description, createtime) values('$uid','$cname','$description', NOW())";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("createchannel() failed. Could not query the database channel: <br />". mysql_error());
+	}
+	
+	return 0;
+}
+
+function addmediatochannel($mediaid, $uid){
+	$q = "select * from channel where userid='".$uid."'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("addmediatochannel() failed. Could not query the database channel: <br />". mysql_error());
+	}
+	
+	if (mysql_num_rows($result) == 0 )
+		return 1;
+	
+	$r = mysql_fetch_assoc($result);
+	$channelid = $r['channelid'];
+	
+	$q="select * from channelmedia where channelid='".$channelid."' and mediaid='".$mediaid."' ";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("addmediatochannel() failed. Could not query the database channelmedia: <br />". mysql_error());
+	}
+	
+	if (mysql_num_rows($result) > 0)
+		return 2;
+	
+	$q = "insert into channelmedia(mediaid, channelid, addtime) values('$mediaid','$channelid',NOW())";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("addmediatochannel() failed. Could not query the database channelmedia: <br />". mysql_error());
+	}
+	return 0;
+}
+
+function removefromchannel($mediaid, $uid){
+	$q = "select * from channel where userid='".$uid."'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("removefromchannel() failed. Could not query the database channel: <br />". mysql_error());
+	}
+	
+	if (mysql_num_rows($result) == 0 )
+		return 1;
+	
+	$r = mysql_fetch_assoc($result);
+	$channelid = $r['channelid'];	
+	
+	$q = "delete from channelmedia where channelid='".$channelid."' and mediaid='".$mediaid."' ";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("removefromchannel() failed. Could not query the database channelmedia: <br />". mysql_error());
+	}
+	return 0;
+}
+
+function deletechannel($uid){
+	$q = "select * from channel where userid='".$uid."'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("deletechannel() failed. Could not query the database channel: <br />". mysql_error());
+	}
+	
+	if (mysql_num_rows($result) == 0 )
+		return 1;
+	
+	$r = mysql_fetch_assoc($result);
+	$channelid = $r['channelid'];
+	
+	$q = "delete from channelmedia where channelid='".$channelid."' ";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("deletechannel() failed. Could not query the database channelmedia: <br />". mysql_error());
+	}
+	
+	$q = "delete from channel where channelid='".$channelid."' ";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("deletechannel() failed. Could not query the database channel: <br />". mysql_error());
+	}
+	
+	return 0;
+}
+
+function followuser($userid, $targetid){
+	$q = "select * from subscribe where userid='".$userid."' and targetid='".$targetid."'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("followuser() failed. Could not query the database subscribe: <br />". mysql_error());
+	}
+	
+	if (mysql_num_rows($result) > 0 )
+		return 1;
+	
+	$q = "insert into subscribe(userid, targetid, followtime) values('$userid','$targetid',NOW())";
+	
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("followuser() failed. Could not query the database subscribe: <br />". mysql_error());
+	}
+	return 0;
+}
+
+function unfollowuser($userid, $targetid){
+	$q = "select * from subscribe where userid='".$userid."' and targetid='".$targetid."'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("unfollowuser() failed. Could not query the database subscribe: <br />". mysql_error());
+	}
+	
+	if (mysql_num_rows($result) == 0 )
+		return 1;
+	
+	$q = "delete from subscribe where userid='".$userid."' and targetid='".$targetid."'";
+	
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("unfollowuser() failed. Could not query the database subscribe: <br />". mysql_error());
+	}
+	return 0;
+}
+
+function addcontact($userid, $targetid){
+	$q = "select * from contact where userid='$userid' and targetid='$targetid'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("addcontact() failed. Could not query the database contact: <br />". mysql_error());
+	}
+	if (mysql_num_rows($result) > 0 )
+		return 1;
+	
+	$q = "insert into contact(userid, targetid, addtime) values('$userid','$targetid',NOW())";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("addcontact() failed. Could not query the database contact: <br />". mysql_error());
+	}
+	return 0;
+}
+
+function removecontact($userid, $targetid){
+	$q = "select * from contact where userid='$userid' and targetid='$targetid'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("removecontact() failed. Could not query the database contact: <br />". mysql_error());
+	}
+	if (mysql_num_rows($result) == 0 )
+		return 1;
+	
+	$q = "delete from contact where userid='$userid' and targetid='$targetid'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("removecontact() failed. Could not query the database contact: <br />". mysql_error());
+	}
+	return 0;
+}
+
 function blockuser($userid, $blockid){
-	$q="insert into block values('$userid','$blockid')";
+	$q="insert into block(userid,blockid,blocktime) values('$userid','$blockid',NOW())";
 	$result=mysql_query($q);
 	if (!$result)
 	{
@@ -416,23 +594,72 @@ function unblockuser($userid, $blockid){
 	return 0;
 }
 
-function creategroup($userid, $groupname){
-	$q="insert into group(createuserid,groupname) values('$userid','$groupname')";
+function addfriend($from, $to){
+	$q = "select * from friend where user1='$from' and user2='$to' and approved = '1'";
 	$result=mysql_query($q);
 	if (!$result)
 	{
-	   die ("creategroup() failed. Could not query the database group: <br />". mysql_error());
+	   die ("addfriend() failed. Could not query the database friend: <br />". mysql_error());
+	}
+	if (mysql_num_rows($result) > 0 )
+		return 1;
+	
+	$q = "insert into friend(user1, user2, addtime) values('$from','$to',NOW())";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("addfriend() failed. Could not query the database friend: <br />". mysql_error());
+	}
+	
+	return 0;
+}
+
+function removefriend($from, $to){
+	
+	$q = "delete from friend where user2='$from' and user1='$to' ";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+		die ("removefriend() failed. Could not query the database friend: <br />". mysql_error());
+	}
+	
+	
+	$q = "delete from friend where user1='$from' and user2='$to' ";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+		die ("removefriend() failed. Could not query the database friend: <br />". mysql_error());
+	}
+	
+	return 0;
+}
+
+function sendmessage($from, $to, $message){
+	$q = "insert into message(fromuserid, touserid, message) values('$from','$to','$message')";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+		die ("removefriend() failed. Could not query the database friend: <br />". mysql_error());
+	}
+}
+
+function creategroup($userid, $groupname){
+	$q="insert into discussiongroup(createuserid,groupname) values('$userid','$groupname')";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("creategroup() failed. Could not query the database discussiongroup: <br />". mysql_error());
 	}
 	$groupid=mysql_insert_id();
 	
-	$q="update group set createtime=NOW() where groupid='$groupid'";
+	$q="update discussiongroup set createtime=NOW() where groupid='$groupid'";
 	$result=mysql_query($q);
 	if (!$result)
 	{
 	   die ("creategroup() failed. Could not update create time: <br />". mysql_error());
 	}
 	
-	$q="insert into groupmember values('$groupid', '$userid')";
+	$q="insert into groupmember(groupid,userid,lastaccess) values('$groupid', '$userid', NOW())";
 	$result=mysql_query($q);
 	if (!$result)
 	{
@@ -443,7 +670,12 @@ function creategroup($userid, $groupname){
 }
 
 function joinGroup($userid, $groupid){
-	$q="insert into groupmember values('$groupid', '$userid')";
+	$q="select * from groupmember where groupid='$groupid' and userid='$userid'";
+	$r=mysql_query($q) or die("Cannot query groupmember.  ".mysql_error());
+	if(mysql_num_rows($r) > 0)
+		return 1;
+	
+	$q="insert into groupmember(groupid,userid,lastaccess) values('$groupid', '$userid', NOW())";
 	$result=mysql_query($q);
 	if (!$result)
 	{
@@ -453,11 +685,11 @@ function joinGroup($userid, $groupid){
 }
 
 function leaveGroup($userid, $groupid){
-	$q="select * from group where groupid='$groupid'";
+	$q="select * from discussiongroup where groupid='$groupid'";
 	$result=mysql_query($q);
 	if (!$result)
 	{
-	   die ("leavegroup() failed. Could not query the database group: <br />". mysql_error());
+	   die ("leavegroup() failed. Could not query the database discussiongroup: <br />". mysql_error());
 	}
 
 	$r=mysql_fetch_assoc($result);
@@ -481,11 +713,11 @@ function leaveGroup($userid, $groupid){
 				die ("leaveGroup() failed. Could not query the database groupmember: <br />". mysql_error());
 			}
 			
-			$q="delete from group where groupid='$groupid'";
+			$q="delete from discussiongroup where groupid='$groupid'";
 			$result=mysql_query($q);
 			if (!$result)
 			{
-				die ("leaveGroup() failed. Could not query the database group: <br />". mysql_error());
+				die ("leaveGroup() failed. Could not query the database discussiongroup: <br />". mysql_error());
 			}
 			return 0;
 			
@@ -503,9 +735,24 @@ function leaveGroup($userid, $groupid){
 	}
 }
 
+function sendgroupmessage($userid, $groupid, $message){
+	$q="insert into groupmessage(groupid, userid, message, sendtime) values('$groupid','$userid','$message',NOW())";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("sendgroupmessage() failed. Could not query the database groupmessage: <br />". mysql_error());
+	}
+	
+}
 
-
-
+function update_group_access_time($userid, $groupid){
+	$q="update groupmember set lastaccess=NOW() where groupid='$groupid' and userid='$userid'";
+	$result=mysql_query($q);
+	if (!$result)
+	{
+	   die ("update_group_access_time() failed. Could not query the database groupmember: <br />". mysql_error());
+	}
+}
 
 function upload_error($result)
 {

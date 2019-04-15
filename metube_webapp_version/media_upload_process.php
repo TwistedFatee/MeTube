@@ -101,8 +101,8 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring'])){
 						}
 					}
 				}
-			$url='userprofile.php?uid='.$userid;
-			header('Location:'.$url);
+			//$url='userprofile.php?uid='.$userid;
+			header('Location:uploadlist.php');
 			}
 			
 		}

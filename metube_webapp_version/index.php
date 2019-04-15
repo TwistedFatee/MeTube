@@ -38,8 +38,13 @@
 		$result = user_randomstring_check($userid, $randomstring);
 		if($result == 0){
 			$userlogin = TRUE;
+			$q="select count(message) as cnt from message where touserid='$userid' and beenread='0'";
+			$r=mysql_query($q) or die("Cannot query message.  ".mysql_error());
+			$result=mysql_fetch_assoc($r);
+			$unreadmessage=$result['cnt'];
 			echo "<font color=\"red\" size=\"4\">Welcome ".$username."</font><span> | </span><a href=\"userprofile.php?uid=".$userid."\"><font color=\"red\">Account</font></a><span> | </span>
-			<a href=\"logout.php\"><font color=\"red\">Log Out</font></a><span> | </span><div class=\"topbar-message\"><a href=\"message.php\"> <i class=\"iconfont\">&#xe625;</i><span> (0) </span></a></div>";
+			<a href=\"logout.php\"><font color=\"red\">Log Out</font></a><span> | </span>
+			<div class=\"topbar-message\"><a href=\"message.php\"> <i class=\"iconfont\">&#xe625;</i><span> (".$unreadmessage.") </span></a></div>";
 		}
 		else
 			echo "<a href=\"login.php\"><font color=\"red\">Sign In</font></a><span> | </span><a href=\"register.php\"><font color=\"red\">Sign Up</font></a><span> | </span>";

@@ -25,7 +25,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Download List</title>
+    <title>Message</title>
     <link rel="icon" href="img/logo.png" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="css/PersonalPage.css">
     <link rel="stylesheet" type="text/css" href="css/DropDownStyle.css">
@@ -57,41 +57,57 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
                 <p style="display: inline-block; font-size: 68px; font-weight: bold; vertical-align: top;">MeTube</p>
             </div>
     </div>
-
-<?php
-	
-	$q="select * from media inner join download on media.mediaid = download.mediaid where download.userid='$userid' order by downloadtime desc";
-	$r=mysql_query($q) or die ("Could not query the database media or download: <br />". mysql_error());
-	
-	
-		
-	
-
-?>
 	
     <div id = "wrapper" class = "wrapper">
         <div id = "content" class = "content">
             <div id = "left-content" class = "left-content">
                 <div id = "user-infor-box" class = "user-infor-box">
 				
-<?php
-	while($result_row=mysql_fetch_assoc($r)){
-		
-?>
-					<div class = "item">
-                        <p><a target="_blank" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>">Media Name: <?php echo $result_row['medianame'];?></a> 
-						</p>
-						<p>Download Time: <?php echo $result_row['downloadtime'];?></p>
-						
+					<div class = "item">                        
+						<p><a href="creatediscussgroup.php">Create a discuss group</a></p>
                     </div>
 <?php
+	
+	$q = "select * from groupmember where userid='".$userid."'";
+	
+	$r = mysql_query($q) or die("Cannot query table groupmember.  ".mysql_error());
+	
+	while($result_row=mysql_fetch_assoc($r)){
+		$groupid=$result_row['groupid'];
+		$q1 = "select * from discussiongroup where groupid='".$groupid."'";
+		$r1 = mysql_query($q1) or die("Cannot query table discussiongroup.  ".mysql_error());
+		$result1=mysql_fetch_assoc($r1);
+		$groupname=$result1['groupname'];	
+		
+		$q2 = "select count(message) as cnt from groupmessage where groupid='$groupid' and 
+			sendtime > (select lastaccess from groupmember where groupid='$groupid' and userid='$userid' )";
+		$r2=mysql_query($q2) or die ("Could not query the database groupmessage: <br />". mysql_error());
+		$result2 = mysql_fetch_assoc($r2);
+		$unreadmessage=$result2['cnt'];
+?>
+					<div class = "item">
+                        <p><a href="groupmessage.php?groupid=<?php echo $groupid;?>">Name: <?php echo $groupname;?></a> 
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<?php 
+		if($unreadmessage > 0){
+?>
+						<font color="red"><?php echo $unreadmessage;?></font>
+<?php
+		}
+?>					
+						<a href="leavegroup.php?groupid=<?php echo $groupid;?>">Leave this group</a>
+						</p>
+                    </div>
+<?php
+	
+		
 	}
 	if (mysql_num_rows($r)==0){
 		
 		
 ?>
                     <div class = "item">                        
-						<p>No Downloaded Media</p>
+						<p>No Record</p>
                     </div>
 <?php
 		
@@ -106,21 +122,19 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
             <div class = "history-record">                
                 <div class="choices">
 					<a href="media_upload.php">Upload File</a>
-                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="uploadlist.php">Upload History</a>
                     <br>
 					<a href="downloadlist.php">Download History</a>
                     <br>
-                    <a href="favoritelist.php">Liked</a>
-					<br>
+                    <a href="favoritelist.php">Liked</a>&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="subscribelist.php">Subscribe List</a>
 					<br>
-                    <a href="userplaylist.php">Play Lists</a>
-					<br>
+                    <a href="userplaylist.php">Play Lists</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="userpchannel.php">Channel</a>
 					<br>
 					
-                    <a href="contact.php">Contact</a>
+                    <a href="contact.php">Contact</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="friendlist.php">Friend</a>
                     <br>
                     <a href="blocklist.php">Blocking List</a>
                     <br>

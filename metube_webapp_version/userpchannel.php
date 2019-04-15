@@ -25,7 +25,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Download List</title>
+    <title>Channel</title>
     <link rel="icon" href="img/logo.png" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="css/PersonalPage.css">
     <link rel="stylesheet" type="text/css" href="css/DropDownStyle.css">
@@ -60,12 +60,8 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 
 <?php
 	
-	$q="select * from media inner join download on media.mediaid = download.mediaid where download.userid='$userid' order by downloadtime desc";
-	$r=mysql_query($q) or die ("Could not query the database media or download: <br />". mysql_error());
-	
-	
-		
-	
+	$q="select * from channel where userid='$userid' ";
+	$r=mysql_query($q) or die ("Could not query the database media: <br />". mysql_error());
 
 ?>
 	
@@ -73,29 +69,65 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
         <div id = "content" class = "content">
             <div id = "left-content" class = "left-content">
                 <div id = "user-infor-box" class = "user-infor-box">
+					
+						
 				
 <?php
-	while($result_row=mysql_fetch_assoc($r)){
+	if (mysql_num_rows($r) == 0){
+?>
+					<div class="item">
+						<a href="createchannel.php">Create your own channel</a>
+					</div>
+<?php
+	}
+	else
+	{
+		$result_row=mysql_fetch_assoc($r);
+		$channelid=$result_row['channelid'];
+		$channelname = $result_row['channelname'];
+		$description = $result_row['description'];
+?>
+					<div class="item">
+						<p><?php echo $channelname;?>&nbsp;&nbsp;&nbsp;<a href="deletechannel.php">Delete channel</a></p>
+						<p><?php echo $description;?></p>
+					</div>
+
+
+<?php
+		
+		$q="select * from media inner join channelmedia on media.mediaid = channelmedia.mediaid where channelid='$channelid' order by addtime desc";
+		$r=mysql_query($q) or die ("Could not query the database media: <br />". mysql_error());
+		if (mysql_num_rows($r) == 0){
+?>
+					<div class="item">
+						<p>There is no media in your channel.</p>
+						<p>Add media to channel from your upload list.</p>
+					</div>
+			
+<?php			
+		}
+		else
+		{
+?>
+					<div class="item">
+						<p>Media List:</p>						
+					</div>
+		
+<?php		
+			while($result_row=mysql_fetch_assoc($r)){
 		
 ?>
 					<div class = "item">
                         <p><a target="_blank" href="vedio.php?mid=<?php echo $result_row['mediaid'];?>">Media Name: <?php echo $result_row['medianame'];?></a> 
 						</p>
-						<p>Download Time: <?php echo $result_row['downloadtime'];?></p>
-						
+						<p>Add time: <?php echo $result_row['addtime'];?>&nbsp;&nbsp;
+						<a href="removemediafromchannel.php?mid=<?php echo $result_row['mediaid'];?>&channelid=<?php echo $channelid;?>" >Remove from you channel</a></p>
                     </div>
 <?php
+			}
+		}
 	}
-	if (mysql_num_rows($r)==0){
-		
-		
-?>
-                    <div class = "item">                        
-						<p>No Downloaded Media</p>
-                    </div>
-<?php
-		
-	}
+	
 	
 
 ?>
@@ -106,21 +138,19 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
             <div class = "history-record">                
                 <div class="choices">
 					<a href="media_upload.php">Upload File</a>
-                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="uploadlist.php">Upload History</a>
                     <br>
 					<a href="downloadlist.php">Download History</a>
                     <br>
-                    <a href="favoritelist.php">Liked</a>
-					<br>
+                    <a href="favoritelist.php">Liked</a>&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="subscribelist.php">Subscribe List</a>
 					<br>
-                    <a href="userplaylist.php">Play Lists</a>
-					<br>
+                    <a href="userplaylist.php">Play Lists</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="userpchannel.php">Channel</a>
 					<br>
 					
-                    <a href="contact.php">Contact</a>
+                    <a href="contact.php">Contact</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="friendlist.php">Friend</a>
                     <br>
                     <a href="blocklist.php">Blocking List</a>
                     <br>
