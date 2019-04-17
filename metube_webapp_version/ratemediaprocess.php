@@ -20,19 +20,22 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring']) ){
 	
 	
 	$userid=$_SESSION['userid'];	
-	$targetuserid=$_REQUEST['targetid'];
-	$mediaid=$_REQUEST['mid'];
-	
-	$result = unfollowuser($userid, $targetuserid);
-	
-	//$mediaid = $_GET['mid'];
-	if ($mediaid > 0){
-		$url = "vedio.php?mid=".$mediaid;
-		header('Location:'.$url);
+	$rate = (int)$_POST['rate'];
+	$mediaid = mysql_escape_string($_POST['mid']);
+	if (gettype($rate) != 'integer' || $rate < 1 || $rate > 11){
+		echo "rate:".$rate.gettype($rate);
+		echo "<br>Rate must be an integer in range [1, 10] ! <br> Rate media failed.";
+		echo "<a href='vedio.php?mid=".$mediaid."> Back to the media</a>";
+		exit();
 	}
-	else		
-		header('Location:subscribelist.php');
+		
 	
+	
+	
+	ratemedia($userid, $mediaid, $rate);
+		
+	$url="vedio.php?mid=".$mediaid;
+	header('Location:'.$url);
 }
 else
 	header('Location:require_login.php');

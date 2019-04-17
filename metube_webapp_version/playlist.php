@@ -50,8 +50,9 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring']) && isset($_GET
 			while ($result_row = mysql_fetch_assoc($r)){
 				$listname=$result_row['playlistname'];
 				
+				
 ?>
-			<input type='radio' value=<?php echo $listname;?> name='playlist'><?php echo $listname;?>
+			<input type='radio' value='<?php echo $listname;?>' name='playlist'><?php echo $listname;?>
 <?php
 			
 			}

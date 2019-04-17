@@ -39,6 +39,8 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring']) ){
 		<p>Group Name: </p>
 		<input type="text" maxlength='50' size='50' name='groupname' />
 		<br>
+		Group Description<br>
+		<TEXTAREA name="description" rows="10" cols="50"></TEXTAREA>
 		<br>
 		<input type='submit' value="Submit" name="submit" /><input type='reset' name='reset' /><br>
 </form>

@@ -20,13 +20,13 @@ function user_exist_check($username){
 
 function add_new_user($username, $password, $phone, $email){
 	if($phone == "" && $email == ""){
-		$query = "insert into account(username, password) values('$username', '$password')";
+		$query = "insert into account(username, password, createtime) values('$username', '$password',NOW())";
 	}else if($phone == ""){
-		$query = "insert into account(username, password, email) values('$username', '$password', '$email')";
+		$query = "insert into account(username, password, email, createtime) values('$username', '$password', '$email', NOW())";
 	}else if($email == ""){
-		$query = "insert into account(username, password, phone) values('$username', '$password', '$phone')";
+		$query = "insert into account(username, password, phone, createtime) values('$username', '$password', '$phone', NOW())";
 	}else{
-		$query = "insert into account(username, password, phone, email) values('$username', '$password', '$phone', '$email')";
+		$query = "insert into account(username, password, phone, email, createtime) values('$username', '$password', '$phone', '$email', NOW())";
 	}
 	
 	$result = mysql_query($query);
@@ -118,20 +118,21 @@ function updateMediaTime($mediaid)
 
 }
 
-function updateViews($mediaid,$ip, $userid)
+function updateViews($mediaid, $ip, $userid)
 {	
 	$query = "	update  media set views=views+1
    						WHERE '$mediaid' = mediaid
 					";
-					 // Run the query created above on the database through the connection
+					 
     $result = mysql_query( $query );
 	if (!$result)
 	{
 	   die ("updateViews() failed. Could not query the database media: <br />". mysql_error());
 	}
+	
 	if ($userid == 0){
 		$query = "select * from view where ip='$ip' and mediaid='$mediaid' and userid=0";
-					 // Run the query created above on the database through the connection
+					 
 		$result = mysql_query( $query );
 		if (!$result)
 		{	
@@ -141,23 +142,23 @@ function updateViews($mediaid,$ip, $userid)
 		$numrows=mysql_num_rows($result);
 		
 		if($numrows==0){
-			$query = "insert into view(ip, mediaid) values('$ip','$mediaid')";
+			$query = "insert into view(ip, mediaid, viewtime) values('$ip','$mediaid', NOW())";
 					 // Run the query created above on the database through the connection
 			$result = mysql_query( $query );
 			if (!$result)
 			{
 				die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
 			}
-			$viewid=mysql_insert_id();
+			//$viewid=mysql_insert_id();
 		}
 		else{
-			$r=mysql_fetch_assoc($result);
-			$viewid=$r['viewid'];
+			$query = "update view set viewtime = NOW() where ip='$ip' and mediaid='$mediaid' and userid=0";
+			$result = mysql_query( $query ) or die("updateViews() failed. Could not query the database view: <br />". mysql_error());
 		}
 		
 	}else{
-		$query = "select * from view where mediaid='$mediaid' and userid='$userid'";
-					 // Run the query created above on the database through the connection
+		$query = "select * from view where mediaid='$mediaid' and userid='$userid' and ip='$ip'";
+					 
 		$result = mysql_query( $query );
 		if (!$result)
 		{	
@@ -167,40 +168,23 @@ function updateViews($mediaid,$ip, $userid)
 		$numrows=mysql_num_rows($result);
 		
 		if($numrows==0){
-			$query = "insert into view(ip, mediaid,userid) values('$ip','$mediaid','$userid')";
-					 // Run the query created above on the database through the connection
+			$query = "insert into view(ip, mediaid,userid, viewtime) values('$ip','$mediaid','$userid', NOW())";
+					 
 			$result = mysql_query( $query );
 			if (!$result)
 			{
 				die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
 			}
-			$viewid=mysql_insert_id();
+			//$viewid=mysql_insert_id();
 		}
 		else{		
-			$r=mysql_fetch_assoc($result);
-			if ($r['ip'] == $ip){
-				$viewid=$r['viewid'];
-			}else{
-				$query = "insert into view(ip, mediaid,userid) values('$ip','$mediaid','$userid')";
-					 // Run the query created above on the database through the connection
-				$result = mysql_query( $query );
-				if (!$result)
-				{
-					die ("updateViews() failed. Could not query the database view: <br />". mysql_error());
-				}
-				$viewid=mysql_insert_id();
-			}
+			$query = "update view set viewtime = NOW() where mediaid='$mediaid' and userid='$userid' and ip='$ip'";
+			$result = mysql_query( $query ) or die("updateViews() failed. Could not query the database view: <br />". mysql_error());
 			
 		}
 	}
 	
-	$query = "	update view set viewtime=NOW() where viewid='$viewid'";
-					 // Run the query created above on the database through the connection
-    $result = mysql_query( $query );
-	if (!$result)
-	{
-	   die ("updateMediaTime() failed. Cannot update viewtime. Could not query the database view: <br />". mysql_error());
-	}
+	
 }
 
 function tagwordcloud($tag){
@@ -594,6 +578,21 @@ function unblockuser($userid, $blockid){
 	return 0;
 }
 
+function checkblocked($userid, $blockid){
+	$q = "select * from block where userid='$userid' and blockid='$blockid'";
+	$result=mysql_query($q) or die ("checkblocked() failed. Could not query the database block: <br />". mysql_error());
+	if(mysql_num_rows($result) > 0)
+		return 1;
+	else
+		return 0;
+}
+
+function ratemedia($userid, $mediaid,$rate){
+	$q = "insert into rate(userid, mediaid,rate, createtime) values('$userid','$mediaid','$rate',NOW()) ";
+	$result=mysql_query($q) or die ("ratemedia() failed. Could not query the database rate: <br />". mysql_error());
+	
+}
+
 function addfriend($from, $to){
 	$q = "select * from friend where user1='$from' and user2='$to' and approved = '1'";
 	$result=mysql_query($q);
@@ -643,8 +642,8 @@ function sendmessage($from, $to, $message){
 	}
 }
 
-function creategroup($userid, $groupname){
-	$q="insert into discussiongroup(createuserid,groupname) values('$userid','$groupname')";
+function creategroup($userid, $groupname, $description){
+	$q="insert into discussiongroup(createuserid,groupname,description) values('$userid','$groupname','$description')";
 	$result=mysql_query($q);
 	if (!$result)
 	{
@@ -733,6 +732,15 @@ function leaveGroup($userid, $groupid){
 		}
 		return 0;
 	}
+}
+
+function checkgrouped ($userid, $targetid){
+	$q="select * from groupmember where userid = '$userid' and groupid in (select groupid from groupmember where userid = '$targetid')";
+	$result=mysql_query($q) or die ("checkgrouped() failed. Could not query the database groupmember: <br />". mysql_error());
+	if (mysql_num_rows($result) == 0)
+		return 1;
+	else
+		return 0;
 }
 
 function sendgroupmessage($userid, $groupid, $message){

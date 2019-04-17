@@ -21,11 +21,12 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring']) ){
 	
 	$userid=$_SESSION['userid'];	
 	$groupname = mysql_escape_string($_POST['groupname']);
+	$groupdescription = mysql_escape_string($_POST['description']);
 		
 	if (strlen($groupname) <= 0 )
 		echo "Group Name is required!";
 	else{
-		creategroup($userid, $groupname);
+		creategroup($userid, $groupname, $groupdescription);
 		header('Location:group.php');
 	}
 }

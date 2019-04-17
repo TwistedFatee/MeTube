@@ -51,11 +51,22 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 	}
 	$q.=" order by views desc";
 		$r=mysql_query($q) or die("Cannot query media. ".mysql_error());
-		if (mysql_num_rows($r) == 0)
+		if (mysql_num_rows($r) == 0){
 			echo "No result";
+		}
 		else {
 			
+			
 			while($result_row=mysql_fetch_assoc($r)){
+				if($userlogin){
+					$uploadid = $result_row['userid'];
+					$bq = "select * from block where userid='$uploadid' and blockid='$userid'";
+					$br = mysql_query($bq) or die("Cannot query block. ".mysql_error());
+					if (mysql_num_rows($br) > 0)
+						continue;
+					
+				}
+				
 				$q2 = "select * from account where userid=".$result_row['userid'];
 				$r2=mysql_query($q2) or die("Cannot query account. ".mysql_error());
 				$username=mysql_fetch_assoc($r2);
@@ -96,7 +107,8 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 			
 			}
 		
-	}
+		}
 ?>
+<br><br>
 </body>
 </html>

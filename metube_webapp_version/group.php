@@ -64,8 +64,26 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
                 <div id = "user-infor-box" class = "user-infor-box">
 				
 					<div class = "item">                        
-						<p><a href="creatediscussgroup.php">Create a discuss group</a></p>
+						<font size="4">
+						<p>
+							
+							<a href="all_groups.php">Search all groups</a>
+							<br>
+							<a href="creatediscussgroup.php">Create a discuss group</a>
+							
+						</p>
+						</font>
                     </div>
+					<br>
+					<div class = "item">                        
+						<font size="4" color="red">
+						<p>
+							Your Group List							
+						</p>
+						</font>
+                    </div>
+					
+							
 <?php
 	
 	$q = "select * from groupmember where userid='".$userid."'";

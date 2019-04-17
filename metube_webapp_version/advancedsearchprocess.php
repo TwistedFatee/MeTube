@@ -11,16 +11,29 @@ ini_set('session.save_path','/home/cai7/temp');
 session_start();
 include_once "function.php";
 
+$userlogin = FALSE;
+if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['randomstring'])){
+	$username=$_SESSION['username'];
+	$userid=$_SESSION['userid'];
+	$randomstring=$_SESSION['randomstring'];
+	
+	$start=$_SESSION['start'];
+	
+	$loginrequired=requirelogin($userid, $randomstring, $start);
+	if($loginrequired==0)
+		$userlogin = TRUE;
+}
+
 if(isset($_SESSION['userid']))
-	$uid=$_SESSION['userid'];
+	$userid=$_SESSION['userid'];
 
 if(isset($_POST['permission'])){
 	if($_POST['permission'] == 'public')
 		$q="select * from media where permission = 'public' ";
 	elseif($_POST['permission'] == 'grouponly')
-		$q="select * from media where (permission = 'grouponly' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid'))) ";
+		$q="select * from media where (permission = 'grouponly' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$userid'))) ";
 	else
-		$q="select * from media where (permission = 'public' or (permission = 'grouponly' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$uid')))) ";
+		$q="select * from media where (permission = 'public' or (permission = 'grouponly' and userid in (select userid from groupmember where groupid in (select groupid from groupmember where userid='$userid')))) ";
 }
 else
 	$q="select * from media where permission = 'public' ";
@@ -106,8 +119,18 @@ $r=mysql_query($q) or die("Cannot query media ".mysql_error());
 //echo mysql_num_rows($r);
 
 while($result_row=mysql_fetch_assoc($r)){
-	$uid=$result_row['userid'];
-	$qu = "select * from account where userid='$uid'";
+	
+	$uploadid=$result_row['userid'];
+	if($userlogin){
+	
+		$bq = "select * from block where userid='$uploadid' and blockid='$userid'";
+		$br = mysql_query($bq) or die("Cannot query block. ".mysql_error());
+		if (mysql_num_rows($br) > 0)
+			continue;
+					
+	}
+	
+	$qu = "select * from account where userid='$uploadid'";
 	$ru = mysql_query($qu) or die("Cannot query account ".mysql_error());
 	$rr = mysql_fetch_assoc($ru);
 	$username = $rr['username'];

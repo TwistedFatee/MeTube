@@ -46,8 +46,8 @@ else
   <input type="text" name="tag2" maxlength="50" size="50"><br>
   Tag 3 (Limit 50 charactors): 
   <input type="text" name="tag3" maxlength="50" size="50"><br>
-  <input type="hidden" name="MAX_FILE_SIZE" value="104857600" />
-   Add a Media: <label style="color:#663399"><em> (Each file limit 100M)</em></label><br/>
+  <input type="hidden" name="MAX_FILE_SIZE" value="40000000" />
+   Add a Media: <label style="color:#663399"><em> (Each file limit 30M)</em></label><br/>
    <input  name="file" type="file" size="50" required>
 	<br>
 	Category&nbsp;

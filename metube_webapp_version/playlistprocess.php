@@ -44,6 +44,7 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 		}
 		else{
 			$listname=$_POST['playlist'];
+			
 			$q="select * from playlist where userid='$userid' and playlistname='$listname'";
 			$r=mysql_query($q);
 			if (!$r)

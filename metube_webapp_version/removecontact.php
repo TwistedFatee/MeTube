@@ -20,14 +20,19 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring']) ){
 	
 	
 	$userid=$_SESSION['userid'];	
-	//$mediaid=$_REQUEST['mid'];
+	$mediaid=$_REQUEST['mid'];
 	$targetuserid=$_REQUEST['targetid'];
 	
 	$result = removecontact($userid, $targetuserid);
-	//echo $result;
-	header('Location:contact.php');
-		
 	
+	if ($mediaid > 0){
+		$url = "vedio.php?mid=".$mediaid;
+		header('Location:'.$url);
+	}
+	else{
+		header('Location:contact.php');
+		
+	}
 }
 else
 	header('Location:require_login.php');

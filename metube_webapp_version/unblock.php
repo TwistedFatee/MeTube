@@ -21,12 +21,15 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 	
 	$targetid=$_REQUEST['targetid'];
 	$deleteresult = unblockuser($userid, $targetid);
-	//$mediaid=$_REQUEST['mid'];
-	//echo $deleteresult;
+	$mediaid=$_REQUEST['mid'];
 	
-	
-	
-	header("Location: blocklist.php");
+	if ($mediaid > 0){
+		$url = "vedio.php?mid=".$mediaid;
+		header('Location:'.$url);
+	}
+	else{
+		header("Location: blocklist.php");
+	}
 }
 else
 	header("Location: require_login.php");

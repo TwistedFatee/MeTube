@@ -20,18 +20,11 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring']) ){
 	
 	
 	$userid=$_SESSION['userid'];	
-	$targetuserid=$_REQUEST['targetid'];
-	$mediaid=$_REQUEST['mid'];
-	
-	$result = unfollowuser($userid, $targetuserid);
-	
-	//$mediaid = $_GET['mid'];
-	if ($mediaid > 0){
-		$url = "vedio.php?mid=".$mediaid;
-		header('Location:'.$url);
-	}
-	else		
-		header('Location:subscribelist.php');
+	$groupid = $_GET['groupid'];
+	$result = joinGroup($userid, $groupid);
+		
+	$url = "groupmessage.php?groupid=".$groupid;
+	header('Location:'.$url);
 	
 }
 else

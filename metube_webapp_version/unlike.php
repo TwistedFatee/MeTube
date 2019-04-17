@@ -22,12 +22,15 @@ if(isset($_SESSION['userid']) && isset($_SESSION['randomstring']) ){
 	$userid=$_SESSION['userid'];	
 	//$targetuserid=$_REQUEST['targetid'];
 	$mediaid=$_REQUEST['mid'];
-	
+	$backtov = $_REQUEST['back'];
+
 	$result = removefavorite($userid, $mediaid);
-		
-	//$url = "vedio.php?mid=".$mediaid;
-		
-	header('Location:favoritelist.php');
+	if ($backtov == '1'){
+		$url = "vedio.php?mid=".$mediaid;
+		header('Location:'.$url);
+	}
+	else 
+		header('Location:favoritelist.php');
 	
 }
 else
