@@ -207,9 +207,13 @@ function tagwordcloud($tag){
 	return 1;
 }
 
-function searchwordcloud($tag){
+function searchwordcloud($tag, $userid){
 	if(strlen($tag) <= 0)
 		return 2;
+	
+	$q = "insert into search(userid, searchkey, searchtime) values('$userid','$tag', NOW())";
+	$result=mysql_query($q) or die ("searchwordcloud() failed. Could not query the database search: <br />". mysql_error());
+	
 	$q="select * from searchwordcloud where searchkey='".$tag."'";
 	$result=mysql_query($q) or die ("searchwordcloud() failed. Could not query the database searchwordcloud: <br />". mysql_error());
 	$numofresult=mysql_num_rows($result);
@@ -219,7 +223,7 @@ function searchwordcloud($tag){
 		return 0;
 	}else{
 		$result_row=mysql_fetch_row($result);
-		$q = "update searchwordcloud set repeats=repeats+1, lastaccess=NOW() where searchid='".$result_row[0]."'";
+		$q = "update searchwordcloud set repeats=repeats+1, lastaccess=NOW() where searchkeyid='".$result_row[0]."'";
 		$result=mysql_query($q) or die ("searchwordcloud() failed. Could not query the database searchwordcloud: <br />". mysql_error());
 		return 0;
 	}

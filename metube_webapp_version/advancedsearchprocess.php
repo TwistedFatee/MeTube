@@ -24,6 +24,9 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 		$userlogin = TRUE;
 }
 
+if (!$userlogin)
+	$userid = 0;
+
 if(isset($_SESSION['userid']))
 	$userid=$_SESSION['userid'];
 
@@ -40,7 +43,7 @@ else
 
 if(strlen($_POST['keyword'])>0){
 	$key = mysql_escape_string($_POST['keyword']);
-	searchwordcloud($key);
+	searchwordcloud($key, $userid);
 	$q.="and mediaid IN ( select mediaid from media where (medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%') ";
 	$key_array=explode(" ", $key);
 	$numofkeywords=count($key_array);
@@ -50,7 +53,7 @@ if(strlen($_POST['keyword'])>0){
 		for($i=0; $i<$numofkeywords; $i++)
 		{
 			$key=$key_array[$i];
-			searchwordcloud($key);
+			searchwordcloud($key, $userid);
 			$q.=" UNION select mediaid from media where (medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%') ";
 		}
 	}

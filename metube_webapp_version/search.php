@@ -22,9 +22,11 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 	if($loginrequired==0)
 		$userlogin = TRUE;
 }
-	
+if (!$userlogin)
+	$userid = 0;
+
 	$key = mysql_escape_string($_REQUEST['keyword']);
-	searchwordcloud($key);
+	searchwordcloud($key, $userid);
 	$q="select * from media where (permission='public') and  
 		(medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%')";
 	if($userlogin){
@@ -36,11 +38,13 @@ if(isset($_SESSION['userid']) && $_SESSION['userid'] > 0 && isset($_SESSION['ran
 	
 	$key_array=explode(" ", $key);
 	$numofkeywords=count($key_array);
+	
+
 	if ($numofkeywords > 1){
 	
 		for($i=0; $i<$numofkeywords; $i++){
 			$key=$key_array[$i];
-			searchwordcloud($key);
+			searchwordcloud($key, $userid);
 			$q.="UNION select * from media where (permission='public') and  (medianame LIKE '%".$key."%' or tag1 LIKE '%".$key."%' or tag2 LIKE '%".$key."%' or tag3 LIKE '%".$key."%' or description LIKE '%".$key."%') ";
 			if($userlogin){
 				$q .= " UNION select * from media where (permission='grouponly') and  
