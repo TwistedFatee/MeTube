@@ -1,9 +1,0 @@
-	<object id="MediaPlayer" align="middle" width=960 height=580 classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95" standby="Loading Windows Media Player components…" type="application/x-oleobject" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112">
-
-<param name="filename" value="<?php echo $result_row['filepath'].$result_row['filename'];  ?>">
-<param name="Showcontrols" value="True">
-<param name="autoStart" value="True">
-
-<embed type="application/x-mplayer2" src="<?php echo $result_row['filepath'].$result_row['filename'];  ?>" name="MediaPlayer" width=960 height=540></embed>
-
-</object>
